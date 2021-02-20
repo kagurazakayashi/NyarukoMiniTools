@@ -99,3 +99,41 @@
     - `lock` or `/3` Power Off and Lock
     - `/?  ` display this help and exit
     - `/V  ` output version information and exit
+
+# ![genpwd](genpwd/icon1.ico) genpwd.exe
+快捷生成由随机字符组成的密码
+
+- 随机密码生成器
+- Password Generator
+
+## 中文
+- 使用:   `genpwd [要包含的字符] [单个密码长度] [要生成的数量]`
+   - 或者 `[单个密码长度] [要生成的数量]`
+   - 或者 `[单个密码长度]`
+- 要包含的字符 包括:
+   - `A` : 大写字母
+   - `a` : 小写字母
+   - `n` : 数字
+   - `s` : 标点符号  
+   - `/?`: 显示此帮助信息
+   - `/V`: 显示版本信息
+- 命令示例: `genpwd Aan 32 1` (生成1个32位的由大小写字母和数字组成的密码)
+
+## English
+- Usage: `genpwd [MODE] [pw_length] [num_pw]`
+   - or  `[pw_length] [num_pw]`
+   - or  `[pw_length]`
+- MODE supported:
+   - `A` : Upper case
+   - `a` : Lower case
+   - `n` : Number
+   - `s` : Symbol
+   - `/?`: display this help and exit
+   - `/V`: output version information and exit
+- Demo: `genpwd Aan 32 1`
+
+# ![null](null/icon1.ico) null.exe
+程序直接退出自己，用于将普通 exe 替换来禁用其原有功能。例如替代软件中的广告弹窗 exe 。
+
+- 该程序不做任何事情
+- does nothing

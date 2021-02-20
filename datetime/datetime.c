@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
         printf("Written by Kagurazaka Yashi.");
         return 0;
     }
-    int aLen = strlen(aStr);
+    int aLen = (int)strlen(aStr);
     int nv = time.tm_year + 1900;
     rnum4(aStr, aLen, nv, "yyyy", 4);
     nv = (nv / 10 % 10) * 10 + (nv / 1 % 10);

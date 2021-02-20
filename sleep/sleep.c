@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
     for (int i = 1; i < argc; i++)
     {
         char* inNum = argv[i];
-        int inLen = strlen(inNum);
+        int inLen = (int)strlen(inNum);
         char num[10] = { '\0' };
         char unit = 's';
         for (int j = 0; j < inLen; j++)
@@ -90,6 +90,6 @@ int main(int argc, char* argv[])
         numi *= 1000;
         total += numi;
     }
-    Sleep(total);
+    Sleep((DWORD)total);
     return 0;
 }
