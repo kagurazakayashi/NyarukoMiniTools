@@ -137,3 +137,26 @@
 
 - 该程序不做任何事情
 - does nothing
+
+# 其他说明
+- 由于程序体积考虑，程序图标采用了最小规格 (16x16@1位) ，在 Windows 资源管理器显示其图标时，可能会发生以下情况，这是资源管理器程序的 bug ：
+    - 图标显示为任意其他已安装应用程序的图标。
+    - 没有图标。
+    - 「空白文件」图标。
+- 建议在 x64 下使用，支持在 x86 下使用，不支持其他平台。
+    - 程序制作环境： Windows 10 x64 / VS 2019
+- 由于 C 语言共通性，经少许修改或无需修改可以在 Linux / macOS 中运行。
+    - 但本项目本身是为了补充 Windows 中缺失的命令，因此可能没有意义。
+    - 部分代码已经包含 Linux 上使用的适配（例如 `genpwd`）。
+
+# 许可协议 License
+```
+NyarukoMiniTools is licensed under Mulan PSL v2 (木兰宽松许可证，第2版).
+You can use this software according to the terms and conditions of the Mulan PSL v2.
+You may obtain a copy of Mulan PSL v2 at:
+         http://license.coscl.org.cn/MulanPSL2
+THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+See the Mulan PSL v2 for more details.
+```

@@ -44,7 +44,7 @@ short charMode(char* nowChar)
 
 void genSelect(char* selArgv) {
     int j, k, allSelectI = 0;
-    for (j = 0; j < strlen(selArgv); j++)
+    for (j = 0; j < (int)strlen(selArgv); j++)
     {
         short nowMode = charMode((char*)selArgv[j]);
         if (nowMode == 1) {
@@ -134,7 +134,7 @@ int main(int argc, char* argv[])
                 return 0;
             }
             short modeChk = 0;
-            for (j = 0; j < strlen(nowArgv); j++)
+            for (j = 0; j < (int)strlen(nowArgv); j++)
             {
                 modeChk += charMode((char*)nowArgv[j]);
             }
