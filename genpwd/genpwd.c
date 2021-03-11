@@ -118,8 +118,8 @@ int main(int argc, char* argv[])
                 printf("    a: Lower case\n");
                 printf("    n: Number\n");
                 printf("    s: Symbol\n");
-                printf("   /?: display this help and exit");
-                printf("   /V: output version information and exit");
+                printf("   /?: display this help and exit\n");
+                printf("   /V: output version information and exit\n");
                 printf("Demo: genpwd Aan 32 1\n");
                 return 0;
             }
