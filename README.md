@@ -140,7 +140,7 @@ String substitution
    - `A` : 大写字母
    - `a` : 小写字母
    - `n` : 数字
-   - `s` : 标点符号  
+   - `s` : 标点符号
    - `/?`: 显示此帮助信息
    - `/V`: 显示版本信息
 - 命令示例: `genpwd Aan 32 1` (生成1个32位的由大小写字母和数字组成的密码)
@@ -163,6 +163,30 @@ String substitution
 
 - 该程序不做任何事情
 - does nothing
+
+# ![reflection](reflection/icon1.ico) reflection.exe
+
+- 输入输出测试工具
+- Input and output test tool
+
+## 中文
+- 这个程序可以用于开发调用其他程序的软件时进行测试，检查输入输出通讯管道是否正常。
+- 使用: `reflection [模式]`
+- 模式:
+   - (留空,不提供) : 输入一行字符串，返回一行字符串（单个字符串长度不能超过 1000 半角字符）
+   - `/T` : 每隔一秒钟，输出一行当前的时间（不再响应其他输入）
+   - `/?`: 显示此帮助信息
+   - `/V`: 显示版本信息
+   - (其他字符串): 将输入的参数直接输出并退出
+
+## English
+- Usage: `reflection [MODE]`
+- MODE:
+   - (null) : Input as is, output as is. (lenth <= 1000)
+   - `/T` : output the current time every second
+   - `/?`: display this help and exit
+   - `/V`: output version information and exit
+   - (other): output parameters
 
 # 其他说明
 - 由于程序体积考虑，程序图标采用了最小规格 (16x16@1位) ，在 Windows 资源管理器显示其图标时，可能会发生以下情况，这是资源管理器程序的 bug ：
