@@ -34,9 +34,12 @@ void ref()
 	while (1)
 	{
 		int scanfcode = scanf("%1000s", &str);
+		fflush(stdin);
 		if (scanfcode != 1) {
 			continue;
 		}
+		printf("%s\n", &str);
+		fflush(stdout);
 		for (i = 0; i < 1001; i++)
 		{
 			str[i] = '\0';
@@ -58,6 +61,7 @@ void ltime()
 		}
 		printf("%4d-%02d-%02d %02d:%02d:%02d\n", 1900 + p->tm_year, 1 + p->tm_mon, p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec);
 		oldsec = p->tm_sec;
+		fflush(stdout);
 		sleepNow(100);
 	}
 }
