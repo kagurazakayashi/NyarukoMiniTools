@@ -14,12 +14,23 @@ See the Mulan PSL v2 for more details.
 #include <stdlib.h>
 #include <windows.h>
 #define TRYHELP "\nTry 'SLEEP /?' for more information."
+
+void sleepNow(DWORD dwMillisrconds)
+{
+    #if defined(__linux__) || defined(macintosh)
+        usleep(dwMillisrconds * 1000);
+    #endif
+    #ifdef _WIN32
+        Sleep(dwMillisrconds);
+    #endif
+}
+
 int main(int argc, char* argv[])
 {
     if (argc < 2)
     {
-        fprintf(stderr, "SLEEP: missing operand%s", TRYHELP);
-        return 1;
+        sleepNow(1000);
+        return 0;
     }
     char* argvstr = argv[1];
     if (strcmp(argvstr, "/?") == 0 || strcmp(argvstr, "--help") == 0)
@@ -27,6 +38,7 @@ int main(int argc, char* argv[])
         printf("Usage: SLEEP NUMBER[SUFFIX]...\n   or: SLEEP OPTION\n");
         printf("Pause for NUMBER seconds. SUFFIX may be 's' for seconds (the default),\n");
         printf("'m' for minutes, 'h' for hours or 'd' for days.\n");
+        printf("DEFAULT: 1s\n");
         printf("Here NUMBER may be an arbitrary floating point number.\n");
         printf("Given two or more arguments, pause for the amount of time specified by the sum of their values.\n");
         printf("\n    /?  display this help and exit");
@@ -62,7 +74,7 @@ int main(int argc, char* argv[])
                 unit = nowchar;
             }
         }
-        if (num[0] == '\0')
+        if (num[0] == 0)
         {
             fprintf(stderr, "SLEEP: invalid time interval '%s'%s", inNum, TRYHELP);
             return 1;
@@ -90,6 +102,6 @@ int main(int argc, char* argv[])
         numi *= 1000;
         total += numi;
     }
-    Sleep((DWORD)total);
+    sleepNow((DWORD)total);
     return 0;
 }
