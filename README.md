@@ -21,6 +21,7 @@
     - `h` 是小时,
     - `d` 是天。
 - `数字` 支持小数。
+    - `数字` 的默认值的 1 秒
 - 如果给了 1 个以上的时间参数，暂停的时间是它们加在一起。
 - `选项`:
     - `/?` : 显示此帮助信息
@@ -36,6 +37,7 @@
     - `h` for hours,
     - `d` for days.
 - Here `NUMBER` may be an arbitrary floating point number.
+    - DEFAULT: 1s
 - Given two or more arguments, pause for the amount of time specified by the sum of their values.
 - `OPTION`:
     - `/?` : display this help and exit
@@ -73,6 +75,30 @@
     - `      ->  2021-02-01 20:21:11`
 - `datetime /?` : display this help and exit
 - `datetime /V` : output version information and exit
+
+# ![repstr](repstr/icon1.ico) repstr.exe
+替换英文字符串
+String substitution
+
+## 中文
+- 使用: `repstr [模式] [原字符串] [要替换的字符串] [替换为]`
+    - 所有字符串只允许英文和数字
+- 模式:
+   - `/c` : 忽略大小写
+   - `/?` : 显示此帮助信息
+   - `/V` : 显示版本信息
+- 演示:
+    - `repstr info\txt\readme.txt \ /`
+
+## English
+- Usage: `repstr [MODE] [String] [Find what] [Replace with]`
+    - `String`: English only.
+- MODE supported:
+   - `/c` : ignore case
+   - `/?` : display this help and exit
+   - `/V` : output version information and exit
+- DEMO:
+    - `repstr info\txt\readme.txt \ /`
 
 # ![scrctl](scrctl/icon1.ico) scrctl.exe
 方便地快速关闭显示器和锁定系统

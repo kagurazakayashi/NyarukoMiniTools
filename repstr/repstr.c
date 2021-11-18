@@ -35,12 +35,12 @@ int strReplace(char* str, char* sub, char* rep) {
 int main(int argc, char* argv[])
 {
     if (argc == 1 || strcmp(argv[1], "/?") == 0 || strcmp(argv[1], "--help") == 0) {
-        printf("Usage: repstr [String] [Find what] [Replace with]\n");
+        printf("Usage: repstr [MODE] [String] [Find what] [Replace with]\n");
         printf("   String: English only.\n");
         printf("MODE supported:\n");
         printf("   /c: ignore case\n");
-        printf("   /?: display this help and exit");
-        printf("   /V: output version information and exit");
+        printf("   /?: display this help and exit\n");
+        printf("   /V: output version information and exit\n");
         printf("Demo: repstr info\\txt\\readme.txt \\ /\n");
         return 0;
     }
