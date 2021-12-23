@@ -3,10 +3,23 @@
 
 - 在平时使用 Windows 制作一些 bat 批处理脚本时，会遇到需要某些命令来操作的问题。因此创建了本仓库，存储一些实用工具。
 - 这些工具全都是 C 语言编写，体积小，可以直接拷贝到 System32 来作为命令调用。
-- `copy *.exe C:\Windows\System32\`
+  - `copy *.exe %SystemRoot%\System32\`
+
+## 安裝 Install
+1. 从 `Release` 中下载最新编译版本。
+2. 提取与当前系统对应的架构版本文件：
+  - `x86`: 用于 32 位 或 64 位 X86 架构处理器及系统。
+  - `x64`: 用于 64 位 X86 架构处理器及系统。
+3. 将提取的所有文件放在一个文件夹中，打开该文件夹。
+4. 右键点击 `sys32_cp.bat` ，选择 **以管理员身份运行** 。
+  - 这些 EXE 文件将被复制到系统 `System32` 文件夹。
+
+## 卸载 Uninstall
+1. 右键点击 `sys32_rm.bat` ，选择 **以管理员身份运行** 。
+  - 系统 `System32` 文件夹中的相关文件名将被删除。
 
 # ![sleep](sleep/icon1.ico) sleep.exe
-为了补充 Windows 中缺失的批处理中常用的延时命令 sleep
+补充 Windows 中缺失的批处理中常用的延时命令 `sleep` 。不再需要 ping 等命令作延迟替代了。
 
 - 暂停 n 秒
 - Pause for N seconds
@@ -77,8 +90,8 @@
 - `datetime /V` : output version information and exit
 
 # ![repstr](repstr/icon1.ico) repstr.exe
-替换英文字符串
-String substitution
+- 替换英文字符串
+- String substitution
 
 ## 中文
 - 使用: `repstr [模式] [原字符串] [要替换的字符串] [替换为]`
