@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Express 15 for Windows Desktop
+VisualStudioVersion = 15.0.34526.175
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "datetime", "datetime\datetime.vcxproj", "{E9A53B3F-846A-4A40-9FE1-F1A4E0E85B13}"
 EndProject
@@ -23,6 +23,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "repstr", "repstr\repstr.vcxproj", "{1EC105D1-F274-4566-B6FD-5E00F3DBF082}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "reflection", "reflection\reflection.vcxproj", "{F71F5BE9-0B45-44B3-812C-589DFB6FD298}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tspwd", "tspwd\tspwd.vcxproj", "{DF835D89-16A7-4067-ADBB-62458E259442}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,6 +90,14 @@ Global
 		{F71F5BE9-0B45-44B3-812C-589DFB6FD298}.Release|x64.Build.0 = Release|x64
 		{F71F5BE9-0B45-44B3-812C-589DFB6FD298}.Release|x86.ActiveCfg = Release|Win32
 		{F71F5BE9-0B45-44B3-812C-589DFB6FD298}.Release|x86.Build.0 = Release|Win32
+		{DF835D89-16A7-4067-ADBB-62458E259442}.Debug|x64.ActiveCfg = Debug|x64
+		{DF835D89-16A7-4067-ADBB-62458E259442}.Debug|x64.Build.0 = Debug|x64
+		{DF835D89-16A7-4067-ADBB-62458E259442}.Debug|x86.ActiveCfg = Debug|Win32
+		{DF835D89-16A7-4067-ADBB-62458E259442}.Debug|x86.Build.0 = Debug|Win32
+		{DF835D89-16A7-4067-ADBB-62458E259442}.Release|x64.ActiveCfg = Release|x64
+		{DF835D89-16A7-4067-ADBB-62458E259442}.Release|x64.Build.0 = Release|x64
+		{DF835D89-16A7-4067-ADBB-62458E259442}.Release|x86.ActiveCfg = Release|Win32
+		{DF835D89-16A7-4067-ADBB-62458E259442}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
