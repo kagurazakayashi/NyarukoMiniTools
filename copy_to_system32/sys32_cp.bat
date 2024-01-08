@@ -7,6 +7,6 @@ COPY /B /V /Y null.exe %SystemRoot%\system32\
 COPY /B /V /Y reflection.exe %SystemRoot%\system32\
 COPY /B /V /Y repstr.exe %SystemRoot%\system32\
 COPY /B /V /Y scrctl.exe %SystemRoot%\system32\
-COPY /B /V /Y sleep.exe %SystemRoot%\system32\
+COPY /B /V /Y tspwd.exe %SystemRoot%\system32\
 set nowdir=
 PAUSE

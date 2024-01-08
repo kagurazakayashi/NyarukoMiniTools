@@ -62,6 +62,26 @@ int main(int argc, char *argv[]) {
 	const char *salt = ""; // 定義一個鹽值字串，預設為空
 	const char *format = "%Y%m%d%H%M%S"; // 定義預設的時間格式字串（顯示到秒）
 	if (argc >= 2) {
+		if (strcmp(argv[1], "/?") == 0 || strcmp(argv[1], "--help") == 0)
+		{
+			printf("Get the SHA256 of the current timestamp.\n");
+			printf("Usage: TSPWD [timestamp precision] [salt]\n");
+			printf("    timestamp precision: `y` / `m` / `d` / `h` / `m` / `s`(default)\n");
+			printf("    salt: any string of English letters/numbers, less than 200 characters (default is empty).\n");
+			printf("    /?  display this help and exit\n");
+			printf("    /V  output version information and exit\n");
+			return 0;
+		}
+		else if (strcmp(argv[1], "/V") == 0 || strcmp(argv[1], "--version") == 0)
+		{
+			printf("TSPwds in Windows 1.0.0\n");
+			printf("Copyright (C) KagurazakaYashi\n");
+			printf("License Mulan PSL v2: <http://license.coscl.org.cn/MulanPSL2>.\n");
+			printf("This is free software: you are free to change and redistribute it.\n");
+			printf("There is NO WARRANTY, to the extent permitted by law.\n");
+			printf("Written by Kagurazaka Yashi.\n");
+			return 0;
+		}
 		// 根據命令列參數調整時間格式字串
 		if (strcmp(argv[1], "y") == 0 || strcmp(argv[1], "Y") == 0) {
 			format = "%Y"; // 只顯示年份
@@ -98,7 +118,8 @@ int main(int argc, char *argv[]) {
 	snprintf(finalString, sizeof(finalString), "%s%s", timeString, salt); // 將時間字串和鹽值組合
 
 	sha256(finalString, hashOutput); // 對組合後的字串進行SHA-256加密
-	printf("%s -> %s", finalString, hashOutput); // 輸出原始字串和加密後的哈希值
+	//printf("%s\n", finalString); // 輸出原始字串
+	printf("%s", hashOutput); // 輸出密後的哈希值
 
 	return 0; // 程式正常結束
 }

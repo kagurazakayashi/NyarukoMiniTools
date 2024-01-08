@@ -41,8 +41,8 @@ int main(int argc, char* argv[])
         printf("DEFAULT: 1s\n");
         printf("Here NUMBER may be an arbitrary floating point number.\n");
         printf("Given two or more arguments, pause for the amount of time specified by the sum of their values.\n");
-        printf("\n    /?  display this help and exit");
-        printf("\n    /V  output version information and exit");
+        printf("    /?  display this help and exit.\n");
+        printf("    /V  output version information and exit.\n");
         return 0;
     }
     else if (strcmp(argvstr, "/V") == 0 || strcmp(argvstr, "--version") == 0)
