@@ -13,18 +13,22 @@ See the Mulan PSL v2 for more details.
 #include <stdlib.h> // 匯入標準函式庫頭檔案，提供記憶體分配、程式控制等功能
 #include <time.h> // 匯入時間處理相關函式頭檔案
 #include <string.h> // 匯入字串處理函式庫頭檔案
+/*
+請根據 OpenSSL 具體安裝位置修改專案屬性，然後重新載入解決方案：
+- 配置屬性 -> VC++ 目錄 -> 包含目錄
+  - 例如 "C:\Program Files\OpenSSL-Win64\include";$(VC_IncludePath);$(WindowsSDK_IncludePath);
+- 配置屬性 -> VC++ 目錄 -> 庫目錄
+  - 例如 "C:\Program Files\OpenSSL-Win64\lib";$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64
+- 配置屬性 -> C/C++ -> 常規 -> 附加包含目錄
+  - 例如 "C:\Program Files\OpenSSL-Win64\include\openssl";"C:\Program Files\OpenSSL-Win64\include";%(AdditionalIncludeDirectories)
+- 配置屬性 -> 連結器 -> 常規 -> 附加庫目錄
+  - 例如 "C:\Program Files\OpenSSL-Win64";%(AdditionalLibraryDirectories)
+- 配置屬性 -> 連結器 -> 輸入 -> 附加依賴項
+  - 例如 "C:\Program Files\OpenSSL-Win64\lib\VC\x64\MD\libcrypto.lib";kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)`
+*/
 //#include <openssl/sha.h> // 註解掉SHA加密函式庫頭檔案，改用EVP
 #include <openssl/evp.h> // 匯入OpenSSL的加密函式庫頭檔案
 #include <openssl/err.h> // 匯入OpenSSL的錯誤處理函式庫頭檔案
-/*
-請根據 openssl 具體安裝位置修改專案屬性：
-- 配置屬性 -> VC++ 目錄 -> 包含目錄
-- 配置屬性 -> VC++ 目錄 -> 庫目錄
-- 配置屬性 -> C/C++ -> 常規 -> 附加包含目錄
-- 配置屬性 -> 連結器 -> 常規 -> 附加庫目錄
-- 配置屬性 -> 連結器 -> 附加依賴項
-*/
-
 void handleErrors(void) {
 	ERR_print_errors_fp(stderr); // 將錯誤訊息輸出到標準錯誤
 	abort(); // 立即終止程式運行
