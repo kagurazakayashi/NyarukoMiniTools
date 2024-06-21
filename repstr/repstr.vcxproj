@@ -142,6 +142,7 @@
     <ClCompile Include="repstr.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="repstr.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
