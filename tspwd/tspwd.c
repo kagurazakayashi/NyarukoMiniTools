@@ -29,11 +29,27 @@ See the Mulan PSL v2 for more details.
 //#include <openssl/sha.h> // 註解掉SHA加密函式庫頭檔案，改用EVP
 #include <openssl/evp.h> // 匯入OpenSSL的加密函式庫頭檔案
 #include <openssl/err.h> // 匯入OpenSSL的錯誤處理函式庫頭檔案
+
+/**
+ * @brief 處理錯誤函式
+ *
+ * 此函式用於處理錯誤，將錯誤訊息輸出到標準錯誤並立即終止程式運行。
+ */
 void handleErrors(void) {
 	ERR_print_errors_fp(stderr); // 將錯誤訊息輸出到標準錯誤
 	abort(); // 立即終止程式運行
 }
 
+/**
+ * @brief 計算輸入字串的 SHA-256 哈希值並以十六進位字串格式輸出
+ *
+ * @param string        輸入的字串
+ * @param outputBuffer  儲存輸出哈希值的緩衝區，必須有 65 字元長度
+ *
+ * 使用 OpenSSL 函式庫進行 SHA-256 哈希運算。包含初始化、更新和最終運算步驟。
+ * 若任何步驟失敗，會呼叫 handleErrors() 進行錯誤處理。
+ * 最終的哈希值會轉換為十六進位字串格式並存入 outputBuffer。
+ */
 void sha256(char *string, char outputBuffer[65]) {
 	EVP_MD_CTX *mdctx; // 宣告訊息摘要內容結構指標
 	unsigned char hash[EVP_MAX_MD_SIZE]; // 定義一個字元陣列來儲存哈希值
@@ -57,73 +73,86 @@ void sha256(char *string, char outputBuffer[65]) {
 		snprintf(&outputBuffer[i * 2], 3, "%02x", (unsigned int)hash[i]); // 格式化輸出到輸出緩衝區
 }
 
-int main(int argc, char *argv[]) {
-	time_t now; // 定義時間變數
-	struct tm now_tm; // 定義時間結構
-	char timeString[20]; // 定義一個字元陣列來儲存時間字串
-	char finalString[255]; // 定義一個字元陣列來儲存最終的字串
-	char hashOutput[65]; // 定義一個字元陣列來儲存哈希輸出
-	const char *salt = ""; // 定義一個鹽值字串，預設為空
-	const char *format = "%Y%m%d%H%M%S"; // 定義預設的時間格式字串（顯示到秒）
-	if (argc >= 2) {
-		if (strcmp(argv[1], "/?") == 0 || strcmp(argv[1], "--help") == 0)
-		{
-			printf("Get the SHA256 of the current timestamp.\n");
-			printf("Usage: TSPWD [timestamp precision] [salt]\n");
-			printf("    timestamp precision: `y` / `m` / `d` / `h` / `m` / `s`(default)\n");
-			printf("    salt: any string of English letters/numbers, less than 200 characters (default is empty).\n");
-			printf("    /?  display this help and exit\n");
-			printf("    /V  output version information and exit\n");
-			return 0;
-		}
-		else if (strcmp(argv[1], "/V") == 0 || strcmp(argv[1], "--version") == 0)
-		{
-			printf("TSPwds in Windows 1.0.0\n");
-			printf("Copyright (C) KagurazakaYashi\n");
-			printf("License Mulan PSL v2: <http://license.coscl.org.cn/MulanPSL2>.\n");
-			printf("This is free software: you are free to change and redistribute it.\n");
-			printf("There is NO WARRANTY, to the extent permitted by law.\n");
-			printf("Written by Kagurazaka Yashi.\n");
-			return 0;
-		}
-		// 根據命令列參數調整時間格式字串
-		if (strcmp(argv[1], "y") == 0 || strcmp(argv[1], "Y") == 0) {
-			format = "%Y"; // 只顯示年份
-		}
-		else if (strcmp(argv[1], "m") == 0) {
-			format = "%Y%m"; // 顯示年份和月份
-		}
-		else if (strcmp(argv[1], "d") == 0 || strcmp(argv[1], "D") == 0) {
-			format = "%Y%m%d"; // 顯示年月日
-		}
-		else if (strcmp(argv[1], "H") == 0 || strcmp(argv[1], "h") == 0) {
-			format = "%Y%m%d%H"; // 顯示到小時
-		}
-		else if (strcmp(argv[1], "M") == 0) {
-			format = "%Y%m%d%H%M"; // 顯示到分鐘
-		}
-		/*else if (strcmp(argv[1], "s") == 0) {
-			format = "%Y%m%d%H%M%S"; // 顯示到秒
-		}*/
-	}
+/**
+ * @brief 產生哈希值
+ * @param format 指定時間格式的字串
+ * @param salt 使用的鹽值
+ * @param hashOutput 用來儲存生成的SHA-256哈希值
+ */
+void generate_hash(const char* format, const char* salt, char* hashOutput) {
+    time_t now;
+    struct tm now_tm;
+    char timeString[20];
+    char finalString[255];
 
-	time(&now); // 獲取當前時間
+    time(&now);
 #ifdef _WIN32
-	localtime_s(&now_tm, &now); // Windows平台使用localtime_s函式轉換時間
+    localtime_s(&now_tm, &now);
 #else
-	localtime_r(&now, &now_tm); // 其他平台使用localtime_r函式轉換時間
+    localtime_r(&now, &now_tm);
 #endif
 
-	if (argc >= 3)
-	{
-		salt = argv[2]; // 如果提供了第三個參數，則將其設定為鹽值
-	}
-	strftime(timeString, sizeof(timeString), format, &now_tm); // 根據格式字串將時間轉換為字串
-	snprintf(finalString, sizeof(finalString), "%s%s", timeString, salt); // 將時間字串和鹽值組合
+    strftime(timeString, sizeof(timeString), format, &now_tm);
+    snprintf(finalString, sizeof(finalString), "%s%s", timeString, salt);
 
-	sha256(finalString, hashOutput); // 對組合後的字串進行SHA-256加密
-	//printf("%s\n", finalString); // 輸出原始字串
-	printf("%s", hashOutput); // 輸出密後的哈希值
+    sha256(finalString, hashOutput);
+}
 
-	return 0; // 程式正常結束
+/**
+ * @brief 主函式
+ * @param argc 命令列參數數量
+ * @param argv 命令列參數陣列
+ * @return 程式執行結果
+ */
+int main(int argc, char* argv[]) {
+    char hashOutput[65];
+    const char* salt = "";
+    const char* format = "%Y%m%d%H%M%S";
+
+    if (argc >= 2) {
+        if (strcmp(argv[1], "/?") == 0 || strcmp(argv[1], "--help") == 0) {
+            printf("Get the SHA256 of the current timestamp.\n");
+            printf("Usage: TSPWD [timestamp precision] [salt]\n");
+            printf("    timestamp precision: `y` / `m` / `d` / `h` / `m` / `s`(default)\n");
+            printf("    salt: any string of English letters/numbers, less than 200 characters (default is empty).\n");
+            printf("    /?  display this help and exit\n");
+            printf("    /V  output version information and exit\n");
+            return 0;
+        }
+        else if (strcmp(argv[1], "/V") == 0 || strcmp(argv[1], "--version") == 0) {
+            printf("TSPwds in Windows 1.0.0\n");
+            printf("Copyright (C) KagurazakaYashi\n");
+            printf("License Mulan PSL v2: <http://license.coscl.org.cn/MulanPSL2>.\n");
+            printf("This is free software: you are free to change and redistribute it.\n");
+            printf("There is NO WARRANTY, to the extent permitted by law.\n");
+            printf("Written by Kagurazaka Yashi.\n");
+            return 0;
+        }
+
+        // 根據命令列參數調整時間格式字串
+        if (strcmp(argv[1], "y") == 0 || strcmp(argv[1], "Y") == 0) {
+            format = "%Y"; // 只顯示年份
+        }
+        else if (strcmp(argv[1], "m") == 0) {
+            format = "%Y%m"; // 顯示年份和月份
+        }
+        else if (strcmp(argv[1], "d") == 0 || strcmp(argv[1], "D") == 0) {
+            format = "%Y%m%d"; // 顯示年月日
+        }
+        else if (strcmp(argv[1], "H") == 0 || strcmp(argv[1], "h") == 0) {
+            format = "%Y%m%d%H"; // 顯示到小時
+        }
+        else if (strcmp(argv[1], "M") == 0) {
+            format = "%Y%m%d%H%M"; // 顯示到分鐘
+        }
+    }
+
+    if (argc >= 3) {
+        salt = argv[2]; // 如果提供了第三個參數，則將其設定為鹽值
+    }
+
+    generate_hash(format, salt, hashOutput);
+    printf("%s", hashOutput); // 輸出密後的哈希值
+
+    return 0;
 }
