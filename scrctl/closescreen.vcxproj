@@ -144,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="scrctl.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="scrctl.rc" />

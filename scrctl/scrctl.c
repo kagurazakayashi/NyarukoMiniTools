@@ -11,8 +11,41 @@ See the Mulan PSL v2 for more details.
 */
 #include <stdio.h>
 #include <windows.h>
+
+
+/**
+ * @brief 監控電源模式
+ *
+ * 此函式用於調整顯示器的電源模式。
+ *
+ * @param powerMode 指定電源模式。可以為下列值之一：
+ * -1：顯示器關閉
+ * 1：顯示器進入省電模式
+ * 2：顯示器恢復全功率模式
+ */
+void monitorPower(int powerMode)
+{
+#ifdef _WIN32
+	PostMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, powerMode);
+#endif
+}
+
+
+/**
+ * @brief 主函式
+ *
+ * 此函式用於處理命令列參數。
+ *
+ * @param argc 命令列參數的數量
+ * @param argv 命令列參數的陣列
+ * @return 程式的結束狀態碼
+ */
 int main(int argc, char* argv[])
 {
+#ifndef _WIN32
+    printf("This program only supports Windows.\n");
+	return 1;
+#endif
     int powerMode = 2;
     if (argc >= 2) {
         char* aStr = argv[1];
@@ -30,7 +63,7 @@ int main(int argc, char* argv[])
         }
         if (strcmp(aStr, "/V") == 0 || strcmp(aStr, "--version") == 0)
         {
-            printf("scrctl 1.0.0\n");
+            printf("scrctl 1.0.1\n");
             printf("Copyright (C) KagurazakaYashi\n");
             printf("License Mulan PSL v2: <http://license.coscl.org.cn/MulanPSL2>.\n");
             printf("This is free software: you are free to change and redistribute it.\n");
@@ -48,9 +81,11 @@ int main(int argc, char* argv[])
         }
         else if (strcmp(aStr, "/3") == 0 || strcmp(aStr, "lock") == 0)
         {
+#ifdef _WIN32
             system("rundll32.exe user32.dll, LockWorkStation");
+#endif
         }
     }
-    PostMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, powerMode);
+    monitorPower(powerMode);
     return 0;
 }
