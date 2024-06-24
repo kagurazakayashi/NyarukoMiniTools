@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="sleep.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="sleep.rc" />
