@@ -142,6 +142,7 @@
     <ClCompile Include="datetime.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="datetime.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

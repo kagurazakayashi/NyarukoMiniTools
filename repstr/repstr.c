@@ -4,7 +4,7 @@
 short ignoreCase = 0;
 
 /**
- * @brief 忽略大小寫的子字串搜尋函式
+ * @brief 忽略大小寫的子字串搜尋
  *
  * 此函式在給定的字串 haystack 中搜尋忽略大小寫的子字串 needle。
  *
@@ -112,7 +112,7 @@ int main(int argc, char* argv[])
     }
     else if (strcmp(argv[1], "/V") == 0 || strcmp(argv[1], "--version") == 0)
     {
-        printf("repstr 1.0.0\n");
+        printf("repstr 1.0.1\n");
         printf("Copyright (C) KagurazakaYashi\n");
         printf("License Mulan PSL v2: <http://license.coscl.org.cn/MulanPSL2>.\n");
         printf("This is free software: you are free to change and redistribute it.\n");

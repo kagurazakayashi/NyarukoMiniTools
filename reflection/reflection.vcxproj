@@ -142,6 +142,7 @@
     <ClCompile Include="reflection.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="reflection.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
