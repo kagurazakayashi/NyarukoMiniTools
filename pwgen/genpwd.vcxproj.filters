@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="genpwd.c">
+    <ClCompile Include="pwgen.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -23,12 +23,12 @@
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="genpwd.h">
+    <ClInclude Include="pwgen.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="genpwd.rc">
+    <ResourceCompile Include="pwgen.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>

@@ -4,12 +4,14 @@
 - A repository for storing some very small Windows programs.
 
 - 在平时使用 Windows 制作一些 bat 批处理脚本时，会遇到需要使用某些系统没有提供的命令。因此创建了本仓库，存储一些实用工具。
-- 这些工具全都是 C 语言编写，体积小，可以直接拷贝到 System32 来作为命令调用。
+- 这些工具全都是 C 语言编写，体积小，可以直接拷贝到 `System32` 来作为命令调用。
   - `copy *.exe %SystemRoot%\System32\`
+- 通过这些新增的工具命令，可以让 bat 批处理变得更方便。
 
 - When you use Windows to create some bat batch scripts, you may encounter the need to use some commands that are not provided by the system. Therefore, this repository was created to store some practical tools.
-- These tools are all written in C language, are small in size, and can be directly copied to System32 to be called as commands.
+- These tools are all written in C language, are small in size, and can be directly copied to `System32` to be called as commands.
   - `copy *.exe %SystemRoot%\System32\`
+- These newly added tool commands can make bat batch processing more convenient.
 
 ## 安裝
 
@@ -190,7 +192,7 @@
   - `/?` display this help and exit
   - `/V` output version information and exit
 
-# ![genpwd](genpwd/icon1.ico) genpwd.exe
+# ![pwgen](pwgen/icon1.ico) pwgen.exe
 
 快捷生成由随机字符组成的密码
 
@@ -199,7 +201,7 @@
 
 ## 中文
 
-- 使用:   `genpwd [要包含的字符] [单个密码长度] [要生成的数量]`
+- 使用:   `pwgen [要包含的字符] [单个密码长度] [要生成的数量]`
   - 或者 `[单个密码长度] [要生成的数量]`
   - 或者 `[单个密码长度]`
 - 要包含的字符 包括:
@@ -209,11 +211,11 @@
   - `s` : 标点符号
   - `/?`: 显示此帮助信息
   - `/V`: 显示版本信息
-- 命令示例: `genpwd Aan 32 1` (生成1个32位的由大小写字母和数字组成的密码)
+- 命令示例: `pwgen Aan 32 1` (生成1个32位的由大小写字母和数字组成的密码)
 
 ## English
 
-- Usage: `genpwd [MODE] [pw_length] [num_pw]`
+- Usage: `pwgen [MODE] [pw_length] [num_pw]`
   - or  `[pw_length] [num_pw]`
   - or  `[pw_length]`
 - MODE supported:
@@ -223,7 +225,7 @@
   - `s` : Symbol
   - `/?`: display this help and exit
   - `/V`: output version information and exit
-- Demo: `genpwd Aan 32 1`
+- Demo: `pwgen Aan 32 1`
 
 # ![null](null/icon1.ico) null.exe
 
@@ -261,11 +263,11 @@
 # ![reflection](tspwd/icon1.ico) tspwd.exe
 
 - 获取当前时间戳的SHA256。
-  - 例如：A 和 B 的拥有同样的时间戳，那么两边的密码是一样的，两边可以在不需要密码传输的情况下进行加密传送，并且拥有一个64位的动态安全密码。需要根据对方的大概解密时间确定时间戳精度。为了防止被反推和猜测时间戳，可以在此基础上加入预共享的固定密码作为盐。
+  - 例如：A 和 B 的拥有同样的时间戳，那么两边的密码是一样的，两边只要知道时间便可以在不需要密码传输的情况下进行加密传送，相当于拥有一个64位的动态密码。需要根据对方的大概解密时间确定时间戳精度。为了防止被反推和猜测时间戳，可以在此基础上加入预共享的固定密码作为盐。
 - Get the SHA256 of the current timestamp.
-  - For example: A and B have the same timestamp, then the passwords of both parties are the same. Both parties can encrypt the transmission without the need for password transmission, and have a 64-bit dynamic security password. The timestamp accuracy needs to be determined based on the approximate decryption time of the other party. In order to prevent reverse inference and guessing of the timestamp, a pre-shared fixed password can be added as a salt on this basis.
+  - For example, if A and B have the same timestamp, then the passwords on both sides are the same. As long as both sides know the time, they can encrypt and transmit without the need for password transmission, which is equivalent to having a 64-bit dynamic password. The timestamp accuracy needs to be determined based on the approximate decryption time of the other party. In order to prevent the timestamp from being reversed and guessed, a pre-shared fixed password can be added as a salt on this basis.
 
-## 编译注意事项
+## 编译
 
 请根据 openssl 具体安装位置修改项目属性：
 
@@ -274,6 +276,14 @@
 - 配置属性 -> C/C++ -> 常规 -> 附加包含目录
 - 配置属性 -> 链接器 -> 常规 -> 附加库目录
 - 配置属性 -> 链接器 -> 附加依赖项
+
+Please modify the project properties according to the specific installation location of openssl:
+
+- Configuration Properties -> VC++ Directories -> Include Directories
+- Configuration Properties -> VC++ Directories -> Library Directories
+- Configuration Properties -> C/C++ -> General -> Additional Include Directories
+- Configuration Properties -> Linker -> General -> Additional Library Directories
+- Configuration Properties -> Linker -> Additional Dependencies
 
 ## 中文
 

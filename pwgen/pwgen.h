@@ -1,5 +1,5 @@
-﻿#ifndef GENPWD_H
-#define GENPWD_H
+﻿#ifndef PWGEN_H
+#define PWGEN_H
 
 /**
  * @brief 判斷字元模式
@@ -70,4 +70,4 @@ int getRandomNumberHardware(int min, int max);
  */
 int chkRandomNumberHardware();
 
-#endif // GENPWD_H
+#endif // PWGEN_H

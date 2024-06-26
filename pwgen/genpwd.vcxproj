@@ -24,6 +24,7 @@
     <ProjectGuid>{c286baa2-d78c-4433-a055-1d196022d906}</ProjectGuid>
     <RootNamespace>genpwd</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>pwgen</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -139,14 +140,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="genpwd.c" />
+    <ClCompile Include="pwgen.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="genpwd.h" />
+    <ClInclude Include="pwgen.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="genpwd.rc" />
+    <ResourceCompile Include="pwgen.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon1.ico" />

@@ -263,7 +263,7 @@ int main(int argc, char* argv[])
 		char* nowArgv = argv[i];
 		if (i == 1) { // mode
 			if (strcmp(nowArgv, "/?") == 0 || strcmp(nowArgv, "--help") == 0) {
-				printf("Usage: genpwd [MODE] [pw_length] [num_pw]\n");
+				printf("Usage: PWGEN [MODE] [pw_length] [num_pw]\n");
 				printf("         or   [pw_length] [num_pw]\n");
 				printf("         or   [pw_length]\n");
 				printf("MODE supported:\n");
@@ -273,13 +273,13 @@ int main(int argc, char* argv[])
 				printf("    s: Symbol\n");
 				printf("   /?: display this help and exit\n");
 				printf("   /V: output version information and exit\n");
-				printf("Demo: genpwd Aan 32 1\n");
+				printf("Demo: PWGEN Aan 32 1\n");
 				chkRandomNumberHardware();
 				return 0;
 			}
 			if (strcmp(nowArgv, "/V") == 0 || strcmp(nowArgv, "--version") == 0)
 			{
-				printf("genpwd 1.1.0\n");
+				printf("PWGEN 1.1.0\n");
 				printf("Copyright (C) KagurazakaYashi\n");
 				printf("License Mulan PSL v2: <http://license.coscl.org.cn/MulanPSL2>.\n");
 				printf("This is free software: you are free to change and redistribute it.\n");
