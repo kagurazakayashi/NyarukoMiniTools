@@ -142,6 +142,7 @@
     <ClCompile Include="genpwd.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="genpwd.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
