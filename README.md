@@ -13,7 +13,7 @@
   - `copy *.exe %SystemRoot%\System32\`
 - These newly added tool commands can make bat batch processing more convenient.
 
-## 安裝
+## 安裝 Install
 
 1. 从 `Release` 中下载最新编译版本。
 2. 提取与当前系统对应的架构版本文件：
@@ -51,7 +51,7 @@
 
 - The relevant file names in the system `System32` folder will be deleted.
 
-# ![sleep](sleep/icon1.ico) sleep.exe
+## ![sleep](sleep/icon1.ico) sleep.exe
 
 - 暂停一定时间。
   - 补充 Windows 中缺失的批处理中常用的延时命令 `sleep` 。不再需要 ping 等命令作延迟替代了。
@@ -65,7 +65,7 @@
   - Support multiple parameters to add.
   - Support countdown display.
 
-## 中文
+### 使用
 
 - 使用: `SLEEP [选项] 数字[后缀]`...
 - 暂停 `数字` 秒。
@@ -82,7 +82,7 @@
   - `/?` : 显示此帮助信息
   - `/V` : 显示版本信息
 
-## English
+### Usage
 
 - Usage: `SLEEP NUMBER[SUFFIX]`...
 - or: `SLEEP OPTION`
@@ -100,14 +100,14 @@
   - `/?` : display this help and exit
   - `/V` : output version information and exit
 
-# ![datetime](datetime/icon1.ico) datetime.exe
+## ![datetime](datetime/icon1.ico) datetime.exe
 
 更方便地在批处理中获取需要的格式时间
 
 - 输出时间日期
 - Get time and date
 
-## 中文
+### 使用
 
 - 使用: `datetime 模式 [时间]`
 - 模式:
@@ -122,7 +122,7 @@
 - `datetime /?` : 显示此帮助信息
 - `datetime /V` : 显示版本信息
 
-## English
+### Usage
 
 - Usage: `datetime MODE [TIME]`
 - MODE:
@@ -136,12 +136,12 @@
 - `datetime /?` : display this help and exit
 - `datetime /V` : output version information and exit
 
-# ![repstr](repstr/icon1.ico) repstr.exe
+## ![repstr](repstr/icon1.ico) repstr.exe
 
 - 替换英文字符串
 - String substitution
 
-## 中文
+### 使用
 
 - 使用: `repstr [模式] [原字符串] [要替换的字符串] [替换为]`
   - 所有字符串只允许英文和数字
@@ -152,7 +152,7 @@
 - 演示:
   - `repstr info\txt\readme.txt \ /`
 
-## English
+### Usage
 
 - Usage: `repstr [MODE] [String] [Find what] [Replace with]`
   - `String`: English only.
@@ -163,14 +163,14 @@
 - DEMO:
   - `repstr info\txt\readme.txt \ /`
 
-# ![scrctl](scrctl/icon1.ico) scrctl.exe
+## ![scrctl](scrctl/icon1.ico) scrctl.exe
 
 方便地快速关闭显示器和锁定系统
 
 - 屏幕开关控制
 - Screen Power Mode
 
-## 中文
+### 使用
 
 - 使用: `scrctl [模式]`
 - 模式:
@@ -181,7 +181,7 @@
   - `/?` 显示此帮助信息
   - `/V` 显示版本信息
 
-## English
+### Usage
 
 - Usage: `scrctl [MODE]`
 - MODE:
@@ -192,14 +192,14 @@
   - `/?` display this help and exit
   - `/V` output version information and exit
 
-# ![pwgen](pwgen/icon1.ico) pwgen.exe
+## ![pwgen](pwgen/icon1.ico) pwgen.exe
 
 快捷生成由随机字符组成的密码
 
 - 随机密码生成器
 - Password Generator
 
-## 中文
+### 使用
 
 - 使用:   `pwgen [要包含的字符] [单个密码长度] [要生成的数量]`
   - 或者 `[单个密码长度] [要生成的数量]`
@@ -213,7 +213,7 @@
   - `/V`: 显示版本信息
 - 命令示例: `pwgen Aan 32 1` (生成1个32位的由大小写字母和数字组成的密码)
 
-## English
+### Usage
 
 - Usage: `pwgen [MODE] [pw_length] [num_pw]`
   - or  `[pw_length] [num_pw]`
@@ -227,21 +227,20 @@
   - `/V`: output version information and exit
 - Demo: `pwgen Aan 32 1`
 
-# ![null](null/icon1.ico) null.exe
+## ![null](null/icon1.ico) null.exe
 
 程序直接退出自己，用于将普通 exe 替换来禁用其原有功能。例如替代软件中的广告弹窗 exe 。
 
 - 该程序不做任何事情
 - does nothing
 
-# ![reflection](reflection/icon1.ico) reflection.exe
+## ![reflection](reflection/icon1.ico) reflection.exe
 
-- 输入输出测试工具
-- Input and output test tool
+- 输入输出测试工具。这个程序可以用于开发调用其他程序的软件时进行测试，检查输入输出通讯管道是否正常。
+- Input and output testing tool. This program can be used to test when developing software that calls other programs to check whether the input and output communication channels are normal.
 
-## 中文
+### 使用
 
-- 这个程序可以用于开发调用其他程序的软件时进行测试，检查输入输出通讯管道是否正常。
 - 使用: `reflection [模式]`
 - 模式:
   - (留空,不提供) : 输入一行字符串，返回一行字符串（单个字符串长度不能超过 1000 半角字符）
@@ -250,7 +249,7 @@
   - `/V`: 显示版本信息
   - (其他字符串): 将输入的参数直接输出并退出
 
-## English
+### Usage
 
 - Usage: `reflection [MODE]`
 - MODE:
@@ -260,14 +259,30 @@
   - `/V`: output version information and exit
   - (other): output parameters
 
-# ![reflection](tspwd/icon1.ico) tspwd.exe
+## ![reflection](tspwd/icon1.ico) tspwd.exe
 
 - 获取当前时间戳的SHA256。
   - 例如：A 和 B 的拥有同样的时间戳，那么两边的密码是一样的，两边只要知道时间便可以在不需要密码传输的情况下进行加密传送，相当于拥有一个64位的动态密码。需要根据对方的大概解密时间确定时间戳精度。为了防止被反推和猜测时间戳，可以在此基础上加入预共享的固定密码作为盐。
 - Get the SHA256 of the current timestamp.
   - For example, if A and B have the same timestamp, then the passwords on both sides are the same. As long as both sides know the time, they can encrypt and transmit without the need for password transmission, which is equivalent to having a 64-bit dynamic password. The timestamp accuracy needs to be determined based on the approximate decryption time of the other party. In order to prevent the timestamp from being reversed and guessed, a pre-shared fixed password can be added as a salt on this basis.
 
-## 编译
+### 使用
+
+- 使用: `tspwd [时间戳精度] [盐]`
+  - 时间戳精度: `y` / `m` / `d` / `h` / `m` / `s`(默认)
+  - 盐: 任意英文字母/数字组成的字符串，小于 200 字符 (默认为空)。
+- 命令示例: `tspwd m "aabbcc"`
+  - 生成当前月份的 SHA256 临时密码，加入固定密码 `aabbcc` 防止反推。
+
+### Usage
+
+- Usage: `tspwd [timestamp precision] [salt]`
+  - timestamp precision: `y` / `m` / `d` / `h` / `m` / `s`(default)
+  - salt: any string of English letters/numbers, less than 200 characters (default is empty).
+- Demo: `tspwd m "aabbcc"`
+  - Generate a SHA256 temporary password for the current month, and add a fixed password `aabbcc` to prevent reverse engineering.
+
+### 编译
 
 请根据 openssl 具体安装位置修改项目属性：
 
@@ -277,6 +292,8 @@
 - 配置属性 -> 链接器 -> 常规 -> 附加库目录
 - 配置属性 -> 链接器 -> 附加依赖项
 
+### Build
+
 Please modify the project properties according to the specific installation location of openssl:
 
 - Configuration Properties -> VC++ Directories -> Include Directories
@@ -285,25 +302,28 @@ Please modify the project properties according to the specific installation loca
 - Configuration Properties -> Linker -> General -> Additional Library Directories
 - Configuration Properties -> Linker -> Additional Dependencies
 
-## 中文
+## ![tee](tee/icon1.ico) tee.exe
 
-- 使用: `tspwd [时间戳精度] [盐]`
-  - 时间戳精度: `y` / `m` / `d` / `h` / `m` / `s`(默认)
-  - 盐: 任意英文字母/数字组成的字符串，小于 200 字符 (默认为空)。
-- 命令示例: `tspwd m "aabbcc"`
-  - 生成当前月份的 SHA256 临时密码，加入固定密码 `aabbcc` 防止反推。
+- 将标准输入复制到每个文件，并复制到标准输出。
+- Copy standard input to each FILE, and also to standard output.
 
-## English
+### 使用
 
-- Usage: `tspwd [timestamp precision] [salt]`
-  - timestamp precision: `y` / `m` / `d` / `h` / `m` / `s`(default)
-  - salt: any string of English letters/numbers, less than 200 characters (default is empty).
-- Demo: `tspwd m "aabbcc"`
-  - Generate a SHA256 temporary password for the current month, and add a fixed password `aabbcc` to prevent reverse engineering.
+- 使用: `Usage: tee [模式] [要写入的日志文件]`
+- 模式:
+  - `/A` : 追加到给定的文件，而不是覆盖
+  - `/?`: 显示此帮助信息
+  - `/V`: 显示版本信息
 
-# 其他说明
+### Usage
 
-## 中文
+- Usage: `Usage: tee [MODE] [logfile]`
+- MODE supported:
+  - `/A` : append to the given FILEs, do not overwrite
+  - `/?`: display this help and exit
+  - `/V`: output version information and exit
+
+## 其他说明
 
 - 由于程序体积考虑，程序图标采用了最小规格 (16x16@1位) ，在 Windows 资源管理器显示其图标时，可能会发生以下情况，这是资源管理器程序的 bug ：
   - 图标显示为任意其他已安装应用程序的图标。
@@ -313,7 +333,7 @@ Please modify the project properties according to the specific installation loca
   - 程序制作环境： Windows 11 / VS 2022
 - 由于 C 语言共通性，部分经少许修改或无需修改可以在 Linux / macOS 中运行。
 
-## English
+## Other instructions
 
 - Due to program size considerations, the program icon uses the smallest size (16x16@1 bit). When Windows Explorer displays its icon, the following may occur. This is a bug in the Explorer program:
   - The icon appears as the icon of any other installed application.
@@ -323,7 +343,7 @@ Please modify the project properties according to the specific installation loca
   - Programming environment: Windows 11 / VS 2022
 - Due to the commonality of C language, some parts can run on Linux / macOS with little or no modification.
 
-# 许可协议 License
+## 许可协议 License
 
 ```
 NyarukoMiniTools is licensed under Mulan PSL v2 (木兰宽松许可证，第2版).
