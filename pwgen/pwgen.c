@@ -279,12 +279,10 @@ int main(int argc, char* argv[])
 			}
 			if (strcmp(nowArgv, "/V") == 0 || strcmp(nowArgv, "--version") == 0)
 			{
-				printf("PWGEN 1.1.0\n");
-				printf("Copyright (C) KagurazakaYashi\n");
-				printf("License Mulan PSL v2: <http://license.coscl.org.cn/MulanPSL2>.\n");
-				printf("This is free software: you are free to change and redistribute it.\n");
-				printf("There is NO WARRANTY, to the extent permitted by law.\n");
-				printf("Written by Kagurazaka Yashi.");
+				printf("pwgen-like 1.1.0\n");
+				printf("Written by Kagurazaka Yashi. https://github.com/kagurazakayashi/NyarukoMiniTools");
+				printf("License Mulan PSL v2: http://license.coscl.org.cn/MulanPSL2\n");
+				printf("This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.\n");
 				chkRandomNumberHardware();
 				return 0;
 			}

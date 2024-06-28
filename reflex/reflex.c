@@ -102,7 +102,7 @@ int main(int argc, char* argv[])
 	signal(SIGINT, sigHandle);
 	if (argc >= 2) {
 		if (strcmp(argv[1], "/?") == 0 || strcmp(argv[1], "--help") == 0) {
-			printf("Usage: reflection [MODE]\n");
+			printf("Usage: REFLEX [MODE]\n");
 			printf("MODE supported:\n");
 			printf("    (null) : Input as is, output as is. (lenth <= 1000)\n");
 			printf("    /T : output the current time every second.\n");
@@ -113,12 +113,10 @@ int main(int argc, char* argv[])
 		}
 		else if (strcmp(argv[1], "/V") == 0 || strcmp(argv[1], "--version") == 0)
 		{
-			printf("reflection 1.1.0\n");
-			printf("Copyright (C) KagurazakaYashi\n");
-			printf("License Mulan PSL v2: <http://license.coscl.org.cn/MulanPSL2>.\n");
-			printf("This is free software: you are free to change and redistribute it.\n");
-			printf("There is NO WARRANTY, to the extent permitted by law.\n");
-			printf("Written by Kagurazaka Yashi.");
+			printf("reflex 1.1.0\n");
+			printf("Written by Kagurazaka Yashi. https://github.com/kagurazakayashi/NyarukoMiniTools");
+			printf("License Mulan PSL v2: http://license.coscl.org.cn/MulanPSL2\n");
+			printf("This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.\n");
 			return 0;
 		}
 		else if (strcmp(argv[1], "/T") == 0 || strcmp(argv[1], "--time") == 0)

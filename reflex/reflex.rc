@@ -51,8 +51,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,0
- PRODUCTVERSION 1,0,0,0
+ FILEVERSION 1,1,0,0
+ PRODUCTVERSION 1,1,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -69,12 +69,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "KagurazakaYashi"
             VALUE "FileDescription", "Input and output test tool"
-            VALUE "FileVersion", "1.0.0.0"
-            VALUE "InternalName", "reflecti.exe"
-            VALUE "LegalCopyright", "Copyright (C) KagurazakaYashi"
-            VALUE "OriginalFilename", "reflecti.exe"
+            VALUE "FileVersion", "1.1.0.0"
+            VALUE "InternalName", "Reflection"
+            VALUE "LegalCopyright", "Written by Kagurazaka Yashi. Licensed under Mulan PSL v2."
+            VALUE "OriginalFilename", "reflex.exe"
             VALUE "ProductName", "NyarukoMiniTools"
-            VALUE "ProductVersion", "1.0.0.0"
+            VALUE "ProductVersion", "1.1.0.0"
         END
     END
     BLOCK "VarFileInfo"

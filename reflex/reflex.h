@@ -1,5 +1,5 @@
-﻿#ifndef REFLECTION_H
-#define REFLECTION_H
+﻿#ifndef REFLEX_H
+#define REFLEX_H
 
 /**
  * 處理接收到的訊號
@@ -23,4 +23,4 @@ void ref();
  */
 void ltime();
 
-#endif // REFLECTION_H
+#endif // REFLEX_H

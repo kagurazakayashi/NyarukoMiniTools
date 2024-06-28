@@ -168,7 +168,7 @@
 方便地快速关闭显示器和锁定系统
 
 - 屏幕开关控制
-- Screen Power Mode
+- Monitor Power Control
 
 ### 使用
 
@@ -234,14 +234,14 @@
 - 该程序不做任何事情
 - does nothing
 
-## ![reflection](reflection/icon1.ico) reflection.exe
+## ![reflex](reflex/icon1.ico) reflex.exe
 
 - 输入输出测试工具。这个程序可以用于开发调用其他程序的软件时进行测试，检查输入输出通讯管道是否正常。
 - Input and output testing tool. This program can be used to test when developing software that calls other programs to check whether the input and output communication channels are normal.
 
 ### 使用
 
-- 使用: `reflection [模式]`
+- 使用: `reflex [模式]`
 - 模式:
   - (留空,不提供) : 输入一行字符串，返回一行字符串（单个字符串长度不能超过 1000 半角字符）
   - `/T` : 每隔一秒钟，输出一行当前的时间（不再响应其他输入）
@@ -251,7 +251,7 @@
 
 ### Usage
 
-- Usage: `reflection [MODE]`
+- Usage: `reflex [MODE]`
 - MODE:
   - (null) : Input as is, output as is. (lenth <= 1000)
   - `/T` : output the current time every second
@@ -259,7 +259,7 @@
   - `/V`: output version information and exit
   - (other): output parameters
 
-## ![reflection](tspwd/icon1.ico) tspwd.exe
+## ![reflex](tspwd/icon1.ico) tspwd.exe
 
 - 获取当前时间戳的SHA256。
   - 例如：A 和 B 的拥有同样的时间戳，那么两边的密码是一样的，两边只要知道时间便可以在不需要密码传输的情况下进行加密传送，相当于拥有一个64位的动态密码。需要根据对方的大概解密时间确定时间戳精度。为了防止被反推和猜测时间戳，可以在此基础上加入预共享的固定密码作为盐。

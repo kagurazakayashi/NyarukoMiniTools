@@ -107,7 +107,7 @@ int main(int argc, char* argv[]) {
     char* argvstr = argv[1];
     if (argc < 2 || strcmp(argvstr, "/?") == 0 || strcmp(argvstr, "--help") == 0)
     {
-        printf("Usage: tee [MODE] [logfile]\n");
+        printf("Usage: TEE [MODE] [logfile]\n");
         printf("MODE supported:\n");
         printf("    /A  append to the given FILEs, do not overwrite.\n");
         printf("    /?  display this help and exit.\n");
@@ -117,10 +117,9 @@ int main(int argc, char* argv[]) {
     else if (strcmp(argvstr, "/V") == 0 || strcmp(argvstr, "/v") == 0 || strcmp(argvstr, "--version") == 0)
     {
         printf("tee-like 1.0.0\n");
-        printf("Written by Kagurazaka Yashi.");
-        printf("License Mulan PSL v2: <http://license.coscl.org.cn/MulanPSL2>.\n");
-        printf("This is free software: you are free to change and redistribute it.\n");
-        printf("There is NO WARRANTY, to the extent permitted by law.\n");
+        printf("Written by Kagurazaka Yashi. https://github.com/kagurazakayashi/NyarukoMiniTools");
+        printf("License Mulan PSL v2: http://license.coscl.org.cn/MulanPSL2\n");
+        printf("This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.\n");
         return 0;
     }
 

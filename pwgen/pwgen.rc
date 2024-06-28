@@ -61,8 +61,8 @@ IDI_ICON1               ICON                    "icon1.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,0
- PRODUCTVERSION 1,0,0,0
+ FILEVERSION 1,1,0,0
+ PRODUCTVERSION 1,1,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -78,13 +78,13 @@ BEGIN
         BLOCK "000004b0"
         BEGIN
             VALUE "CompanyName", "KagurazakaYashi"
-            VALUE "FileDescription", "Password Generator"
-            VALUE "FileVersion", "1.0.0.0"
-            VALUE "InternalName", "genpwd.exe"
-            VALUE "LegalCopyright", "Copyright (C) KagurazakaYashi"
-            VALUE "OriginalFilename", "genpwd.exe"
+            VALUE "FileDescription", "pwgen-like"
+            VALUE "FileVersion", "1.1.0.0"
+            VALUE "InternalName", "PwGen"
+            VALUE "LegalCopyright", "Written by Kagurazaka Yashi. Licensed under Mulan PSL v2."
+            VALUE "OriginalFilename", "pwgen.exe"
             VALUE "ProductName", "NyarukoMiniTools"
-            VALUE "ProductVersion", "1.0.0.0"
+            VALUE "ProductVersion", "1.1.0.0"
         END
     END
     BLOCK "VarFileInfo"

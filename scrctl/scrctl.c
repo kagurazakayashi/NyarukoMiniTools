@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
         char* aStr = argv[1];
         if (strcmp(aStr, "/?") == 0 || strcmp(aStr, "--help") == 0)
         {
-            printf("Usage: scrctl [MODE]\n");
+            printf("Usage: SCRCTL [MODE]\n");
             printf("MODE:");
             printf("\n   off  or  /0  Power Off (default)");
             printf("\n    on  or  /1  Power On");
@@ -64,11 +64,9 @@ int main(int argc, char* argv[])
         if (strcmp(aStr, "/V") == 0 || strcmp(aStr, "--version") == 0)
         {
             printf("scrctl 1.0.1\n");
-            printf("Copyright (C) KagurazakaYashi\n");
-            printf("License Mulan PSL v2: <http://license.coscl.org.cn/MulanPSL2>.\n");
-            printf("This is free software: you are free to change and redistribute it.\n");
-            printf("There is NO WARRANTY, to the extent permitted by law.\n");
-            printf("Written by Kagurazaka Yashi.");
+            printf("Written by Kagurazaka Yashi. https://github.com/kagurazakayashi/NyarukoMiniTools");
+            printf("License Mulan PSL v2: http://license.coscl.org.cn/MulanPSL2\n");
+            printf("This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.\n");
             return 0;
         }
         if (strcmp(aStr, "/1") == 0 || strcmp(aStr, "on") == 0)

@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="reflection.c">
+    <ClCompile Include="reflex.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -23,12 +23,12 @@
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="reflection.h">
+    <ClInclude Include="reflex.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="reflection.rc">
+    <ResourceCompile Include="reflex.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>

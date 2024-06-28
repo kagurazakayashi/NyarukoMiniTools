@@ -145,7 +145,7 @@ int main(int argc, char* argv[])
     char* aStr = argv[1];
     if (strcmp(aStr, "/?") == 0 || strcmp(aStr, "--help") == 0)
     {
-        printf("Usage: datetime MODE [TIME]\n");
+        printf("Usage: DATETIME MODE [TIME]\n");
         printf("MODE:\n");
         printf("    Support: yyyy,yy,MM,dd,HH,hh,mm,ss\n");
         printf("  Unsupport: y,M,d,H,h,m,s,ddd,dddd,MMM,MMMM,gg ...\n");
@@ -158,11 +158,9 @@ int main(int argc, char* argv[])
     if (strcmp(aStr, "/V") == 0 || strcmp(aStr, "--version") == 0)
     {
         printf("datetime 1.1.0\n");
-        printf("Copyright (C) KagurazakaYashi\n");
-        printf("License Mulan PSL v2: <http://license.coscl.org.cn/MulanPSL2>.\n");
-        printf("This is free software: you are free to change and redistribute it.\n");
-        printf("There is NO WARRANTY, to the extent permitted by law.\n");
-        printf("Written by Kagurazaka Yashi.");
+        printf("Written by Kagurazaka Yashi. https://github.com/kagurazakayashi/NyarukoMiniTools");
+        printf("License Mulan PSL v2: http://license.coscl.org.cn/MulanPSL2\n");
+        printf("This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.\n");
         return 0;
     }
     replaceTimeMarkers(aStr, time);

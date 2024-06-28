@@ -22,7 +22,7 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{f71f5be9-0b45-44b3-812c-589dfb6fd298}</ProjectGuid>
-    <RootNamespace>reflection</RootNamespace>
+    <RootNamespace>reflex</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,14 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="reflection.c" />
+    <ClCompile Include="reflex.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="reflection.h" />
+    <ClInclude Include="reflex.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="reflection.rc" />
+    <ResourceCompile Include="reflex.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon1.ico" />

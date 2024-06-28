@@ -22,7 +22,7 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{c286baa2-d78c-4433-a055-1d196022d906}</ProjectGuid>
-    <RootNamespace>genpwd</RootNamespace>
+    <RootNamespace>pwgen</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>pwgen</ProjectName>
   </PropertyGroup>
