@@ -27,7 +27,7 @@ unsigned int seedi = 0;
 /**
  * @brief 判斷字元模式
  *
- * 這個函數根據傳入的字元返回一個短整數值，
+ * 這個函式根據傳入的字元返回一個短整數值，
  * 以表示該字元的模式。具體的模式如下：
  *  - 大寫字母 'N' 或小寫字母 'n' 返回 3
  *  - 大寫字母 'S' 或小寫字母 's' 返回 4
@@ -67,7 +67,7 @@ short charMode(char* nowChar)
 /**
  * @brief 生成選擇字元
  *
- * 此函數根據輸入的字元串生成選擇的字元集合。
+ * 此函式根據輸入的字元串生成選擇的字元集合。
  * 字元串中的每個字元都會根據其模式添加相應範圍的字元到選擇集合中。
  *
  * @param selArgv 輸入的字元串。
@@ -114,7 +114,7 @@ void genSelect(char* selArgv)
 /**
  * @brief 初始化隨機種子
  *
- * 此函數使用當前時間作為隨機數種子來初始化隨機數生成器。
+ * 此函式使用當前時間作為隨機數種子來初始化隨機數生成器。
  *
  * @return int 返回1表示初始化成功
  */
@@ -129,7 +129,7 @@ int initRandomSeed() {
 /**
  * @brief 取得介於 min 和 max 之間的隨機數字。
  *
- * 這個函數會產生一個介於 min 和 max 之間的隨機數字（包括 min 和 max）。
+ * 這個函式會產生一個介於 min 和 max 之間的隨機數字（包括 min 和 max）。
  * 如果 min 大於 max，會自動交換這兩個值。
  *
  * @param min 最小值
@@ -153,7 +153,7 @@ int getRandomNumberSoftware(int min, int max) {
 /**
  * @brief 從硬體隨機數產生器取得隨機數
  *
- * 此函數會從硬體隨機數產生器中取得隨機數，並限制其範圍在給定的最小值與最大值之間。
+ * 此函式會從硬體隨機數產生器中取得隨機數，並限制其範圍在給定的最小值與最大值之間。
  * 若硬體隨機數產生器不可用，則返回INT_MIN。
  *
  * @param min 最小值（包含）
@@ -211,7 +211,7 @@ int getRandomNumberHardware(int min, int max) {
 /**
  * @brief 檢查硬體隨機數生成器是否可用
  *
- * 這個函數調用硬體隨機數生成器，並檢查生成的隨機數是否在有效範圍內。
+ * 這個函式調用硬體隨機數生成器，並檢查生成的隨機數是否在有效範圍內。
  * 如果硬體隨機數生成器不可用，則會顯示警告訊息並返回0；否則，返回1。
  *
  * @return int 返回1表示硬體隨機數生成器可用，返回0表示不可用。
@@ -236,12 +236,43 @@ int chkRandomNumberHardware()
 
 
 /**
+ * @brief 比較給定字串中的每個字元是否與指定字元匹配
+ *
+ * 此函式會檢查給定字串中的每個字元，並比較它是否與指定的字元k匹配。
+ * 如果匹配，則返回1；否則返回0。
+ *
+ * @param str 欲檢查的字串
+ * @param k 欲匹配的字元（必須為大寫 char）
+ * @return int 如果找到匹配的字元返回1，否則返回0
+ */
+int argcmp(const char *str, char k) {
+    // 迴圈遍歷字串中的每個字元
+    while (*str) {
+        // 取得字串中當前字元的下一個字元
+        char c = *(str + 1);
+        // 如果字元是小寫字母，將其轉換為大寫
+        if (c >= 'a' && c <= 'z') {
+            c -= ('a' - 'A');
+        }
+        // 檢查當前字元是否為 '/' 或 '-' ，且下一個字元是否等於 k
+        if ((*str == '/' || *str == '-') && c == k) {
+            return 1; // 如果匹配，返回1
+        }
+        // 移動到字串中的下一個字元
+        str++;
+    }
+    // 如果未找到匹配的字元，返回0
+    return 0;
+}
+
+
+/**
  * @brief 主函式
  *
- * 這個函式是程式的入口，根據命令列參數生成指定長度的隨機密碼。
+ * 這個函式是程式的入口，根據命令列引數生成指定長度的隨機密碼。
  *
- * @param argc 命令列參數的數量
- * @param argv 命令列參數的陣列
+ * @param argc 命令列引數的數量
+ * @param argv 命令列引數的陣列
  * @return 程式的結束狀態碼
  */
 int main(int argc, char* argv[])
@@ -260,9 +291,9 @@ int main(int argc, char* argv[])
 	int initializedSeed = 0;
 	for (i = 1; i < argc; i++)
 	{
-		char* nowArgv = argv[i];
+		char* aStr = argv[i];
 		if (i == 1) { // mode
-			if (strcmp(nowArgv, "/?") == 0 || strcmp(nowArgv, "--help") == 0) {
+			if (strcmp(aStr, "/?") == 0 || argcmp(aStr, 'H') == 1 || strcmp(aStr, "--help") == 0) {
 				printf("Usage: PWGEN [MODE] [pw_length] [num_pw]\n");
 				printf("         or   [pw_length] [num_pw]\n");
 				printf("         or   [pw_length]\n");
@@ -277,39 +308,39 @@ int main(int argc, char* argv[])
 				chkRandomNumberHardware();
 				return 0;
 			}
-			if (strcmp(nowArgv, "/V") == 0 || strcmp(nowArgv, "--version") == 0)
+			if (strcmp(aStr, "/V") == 0 || strcmp(aStr, "--version") == 0)
 			{
 				printf("pwgen-like 1.1.0\n");
-				printf("Written by Kagurazaka Yashi. https://github.com/kagurazakayashi/NyarukoMiniTools");
+				printf("Written by Kagurazaka Yashi. https://github.com/kagurazakayashi/NyarukoMiniTools\n");
 				printf("License Mulan PSL v2: http://license.coscl.org.cn/MulanPSL2\n");
 				printf("This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.\n");
 				chkRandomNumberHardware();
 				return 0;
 			}
 			modeChk = 0;
-			for (j = 0; j < (int)strlen(nowArgv); j++)
+			for (j = 0; j < (int)strlen(aStr); j++)
 			{
-				modeChk += charMode((char*)nowArgv[j]);
+				modeChk += charMode((char*)aStr[j]);
 			}
 			if (modeChk == 0) {
 				noArg1 = 1;
-				aLength = atoi(nowArgv);
+				aLength = atoi(aStr);
 				genSelect(aSelect);
 			}
 			else {
-				genSelect(nowArgv);
+				genSelect(aStr);
 			}
 		}
 		else if (i == 2) {
 			if (noArg1 == 1) {
-				aCount = atoi(nowArgv);
+				aCount = atoi(aStr);
 			}
 			else {
-				aLength = atoi(nowArgv);
+				aLength = atoi(aStr);
 			}
 		}
 		else if (i == 3 && noArg1 == 0) {
-			aCount = atoi(nowArgv);
+			aCount = atoi(aStr);
 		}
 	}
 	selectCharLen = (int)strlen(allSelect);

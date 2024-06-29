@@ -34,10 +34,10 @@ void write_to_files(const char* data, FILE** files, int num_files) {
 /**
  * @brief 打開多個檔案並返回檔案指標的陣列
  *
- * 此函數接收命令行參數，從指定索引開始打開檔案並以指定模式開啟。
+ * 此函式接收命令列引數，從指定索引開始打開檔案並以指定模式開啟。
  *
- * @param argc 命令行參數的數量
- * @param argv 命令行參數的陣列
+ * @param argc 命令列引數的數量
+ * @param argv 命令列引數的陣列
  * @param file_start_index 檔案名稱開始的索引
  * @param mode 開啟檔案的模式，例如 "r"、"w" 等
  * @param num_files 返回開啟的檔案數量
@@ -77,7 +77,7 @@ FILE** open_files(int argc, char* argv[], int file_start_index, const char* mode
 /**
  * @brief 關閉檔案並釋放檔案指標陣列記憶體
  * 
- * 這個函數會逐一關閉傳入的檔案指標陣列中的所有檔案，然後釋放該陣列的記憶體。
+ * 這個函式會逐一關閉傳入的檔案指標陣列中的所有檔案，然後釋放該陣列的記憶體。
  *
  * @param files 檔案指標陣列的指標
  * @param num_files 檔案指標陣列的大小（檔案數量）
@@ -93,19 +93,50 @@ void close_files(FILE** files, int num_files) {
 
 
 /**
+ * @brief 比較給定字串中的每個字元是否與指定字元匹配
+ *
+ * 此函式會檢查給定字串中的每個字元，並比較它是否與指定的字元k匹配。
+ * 如果匹配，則返回1；否則返回0。
+ *
+ * @param str 欲檢查的字串
+ * @param k 欲匹配的字元（必須為大寫 char）
+ * @return int 如果找到匹配的字元返回1，否則返回0
+ */
+int argcmp(const char *str, char k) {
+    // 迴圈遍歷字串中的每個字元
+    while (*str) {
+        // 取得字串中當前字元的下一個字元
+        char c = *(str + 1);
+        // 如果字元是小寫字母，將其轉換為大寫
+        if (c >= 'a' && c <= 'z') {
+            c -= ('a' - 'A');
+        }
+        // 檢查當前字元是否為 '/' 或 '-' ，且下一個字元是否等於 k
+        if ((*str == '/' || *str == '-') && c == k) {
+            return 1; // 如果匹配，返回1
+        }
+        // 移動到字串中的下一個字元
+        str++;
+    }
+    // 如果未找到匹配的字元，返回0
+    return 0;
+}
+
+
+/**
  * @brief 主函式
  *
- * 這個函式處理命令行參數，並將標準輸入的資料寫入到指定的檔案中。
+ * 這個函式處理命令列引數，並將標準輸入的資料寫入到指定的檔案中。
  *
- * @param argc 命令行參數的數量
- * @param argv 命令行參數的陣列
+ * @param argc 命令列引數的數量
+ * @param argv 命令列引數的陣列
  * @return 程式的結束狀態碼
  */
 int main(int argc, char* argv[]) {
     int append_mode = 0;
     int file_start_index = 1;
-    char* argvstr = argv[1];
-    if (argc < 2 || strcmp(argvstr, "/?") == 0 || strcmp(argvstr, "--help") == 0)
+    char* aStr = argv[1];
+    if (argc < 2 || strcmp(aStr, "/?") == 0 || argcmp(aStr, 'H') == 1 || strcmp(aStr, "--help") == 0)
     {
         printf("Usage: TEE [MODE] [logfile]\n");
         printf("MODE supported:\n");
@@ -114,16 +145,16 @@ int main(int argc, char* argv[]) {
         printf("    /V  output version information and exit.\n");
         return 0;
     }
-    else if (strcmp(argvstr, "/V") == 0 || strcmp(argvstr, "/v") == 0 || strcmp(argvstr, "--version") == 0)
+    else if (argcmp(aStr, 'V') == 1 || strcmp(aStr, "--version") == 0)
     {
         printf("tee-like 1.0.0\n");
-        printf("Written by Kagurazaka Yashi. https://github.com/kagurazakayashi/NyarukoMiniTools");
+        printf("Written by Kagurazaka Yashi. https://github.com/kagurazakayashi/NyarukoMiniTools\n");
         printf("License Mulan PSL v2: http://license.coscl.org.cn/MulanPSL2\n");
         printf("This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.\n");
         return 0;
     }
 
-    if (strcmp(argv[1], "/A") == 0 || strcmp(argv[1], "/a") == 0 || strcmp(argv[1], "--add") == 0) {
+    if (argcmp(aStr, 'A') == 1 || strcmp(aStr, "--add") == 0) {
         append_mode = 1;
         file_start_index = 2;
     }

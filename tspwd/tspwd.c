@@ -98,19 +98,51 @@ void generate_hash(const char* format, const char* salt, char* hashOutput) {
     sha256(finalString, hashOutput);
 }
 
+
+/**
+ * @brief 比較給定字串中的每個字元是否與指定字元匹配
+ *
+ * 此函式會檢查給定字串中的每個字元，並比較它是否與指定的字元k匹配。
+ * 如果匹配，則返回1；否則返回0。
+ *
+ * @param str 欲檢查的字串
+ * @param k 欲匹配的字元（必須為大寫 char）
+ * @return int 如果找到匹配的字元返回1，否則返回0
+ */
+int argcmp(const char *str, char k) {
+    // 迴圈遍歷字串中的每個字元
+    while (*str) {
+        // 取得字串中當前字元的下一個字元
+        char c = *(str + 1);
+        // 如果字元是小寫字母，將其轉換為大寫
+        if (c >= 'a' && c <= 'z') {
+            c -= ('a' - 'A');
+        }
+        // 檢查當前字元是否為 '/' 或 '-' ，且下一個字元是否等於 k
+        if ((*str == '/' || *str == '-') && c == k) {
+            return 1; // 如果匹配，返回1
+        }
+        // 移動到字串中的下一個字元
+        str++;
+    }
+    // 如果未找到匹配的字元，返回0
+    return 0;
+}
+
+
 /**
  * @brief 主函式
- * @param argc 命令列參數數量
- * @param argv 命令列參數陣列
+ * @param argc 命令列引數數量
+ * @param argv 命令列引數陣列
  * @return 程式執行結果
  */
 int main(int argc, char* argv[]) {
     char hashOutput[65];
     const char* salt = "";
     const char* format = "%Y%m%d%H%M%S";
-
+    char* aStr = argv[1];
     if (argc >= 2) {
-        if (strcmp(argv[1], "/?") == 0 || strcmp(argv[1], "--help") == 0) {
+        if (strcmp(aStr, "/?") == 0 || argcmp(aStr, 'H') == 1 || strcmp(aStr, "--help") == 0) {
             printf("Get the SHA256 of the current timestamp.\n");
             printf("Usage: TSPWD [timestamp precision] [salt]\n");
             printf("    timestamp precision: `y` / `m` / `d` / `h` / `m` / `s`(default)\n");
@@ -119,34 +151,34 @@ int main(int argc, char* argv[]) {
             printf("    /V  output version information and exit\n");
             return 0;
         }
-        else if (strcmp(argv[1], "/V") == 0 || strcmp(argv[1], "--version") == 0) {
+        else if (argcmp(aStr, 'V') == 1 || strcmp(aStr, "--version") == 0) {
             printf("TSPwd 1.0.1\n");
-            printf("Written by Kagurazaka Yashi. https://github.com/kagurazakayashi/NyarukoMiniTools");
+            printf("Written by Kagurazaka Yashi. https://github.com/kagurazakayashi/NyarukoMiniTools\n");
             printf("License Mulan PSL v2: http://license.coscl.org.cn/MulanPSL2\n");
             printf("This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.\n");
             return 0;
         }
 
-        // 根據命令列參數調整時間格式字串
-        if (strcmp(argv[1], "y") == 0 || strcmp(argv[1], "Y") == 0) {
+        // 根據命令列引數調整時間格式字串
+        if (argcmp(aStr, 'y') == 1) {
             format = "%Y"; // 只顯示年份
         }
-        else if (strcmp(argv[1], "m") == 0) {
+        else if (strcmp(aStr, "m") == 0) {
             format = "%Y%m"; // 顯示年份和月份
         }
-        else if (strcmp(argv[1], "d") == 0 || strcmp(argv[1], "D") == 0) {
+        else if (argcmp(aStr, 'D') == 1) {
             format = "%Y%m%d"; // 顯示年月日
         }
-        else if (strcmp(argv[1], "H") == 0 || strcmp(argv[1], "h") == 0) {
+        else if (argcmp(aStr, 'H') == 1) {
             format = "%Y%m%d%H"; // 顯示到小時
         }
-        else if (strcmp(argv[1], "M") == 0) {
+        else if (strcmp(aStr, "M") == 0) {
             format = "%Y%m%d%H%M"; // 顯示到分鐘
         }
     }
 
     if (argc >= 3) {
-        salt = argv[2]; // 如果提供了第三個參數，則將其設定為鹽值
+        salt = argv[2]; // 如果提供了第三個引數，則將其設定為鹽值
     }
 
     generate_hash(format, salt, hashOutput);

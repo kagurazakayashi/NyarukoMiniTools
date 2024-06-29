@@ -32,12 +32,43 @@ void monitorPower(int powerMode)
 
 
 /**
+ * @brief 比較給定字串中的每個字元是否與指定字元匹配
+ *
+ * 此函式會檢查給定字串中的每個字元，並比較它是否與指定的字元k匹配。
+ * 如果匹配，則返回1；否則返回0。
+ *
+ * @param str 欲檢查的字串
+ * @param k 欲匹配的字元（必須為大寫 char）
+ * @return int 如果找到匹配的字元返回1，否則返回0
+ */
+int argcmp(const char *str, char k) {
+    // 迴圈遍歷字串中的每個字元
+    while (*str) {
+        // 取得字串中當前字元的下一個字元
+        char c = *(str + 1);
+        // 如果字元是小寫字母，將其轉換為大寫
+        if (c >= 'a' && c <= 'z') {
+            c -= ('a' - 'A');
+        }
+        // 檢查當前字元是否為 '/' 或 '-' ，且下一個字元是否等於 k
+        if ((*str == '/' || *str == '-') && c == k) {
+            return 1; // 如果匹配，返回1
+        }
+        // 移動到字串中的下一個字元
+        str++;
+    }
+    // 如果未找到匹配的字元，返回0
+    return 0;
+}
+
+
+/**
  * @brief 主函式
  *
- * 此函式用於處理命令列參數。
+ * 此函式用於處理命令列引數。
  *
- * @param argc 命令列參數的數量
- * @param argv 命令列參數的陣列
+ * @param argc 命令列引數的數量
+ * @param argv 命令列引數的陣列
  * @return 程式的結束狀態碼
  */
 int main(int argc, char* argv[])
@@ -49,7 +80,7 @@ int main(int argc, char* argv[])
     int powerMode = 2;
     if (argc >= 2) {
         char* aStr = argv[1];
-        if (strcmp(aStr, "/?") == 0 || strcmp(aStr, "--help") == 0)
+        if (strcmp(aStr, "/?") == 0 || argcmp(aStr, 'H') == 1 || strcmp(aStr, "--help") == 0)
         {
             printf("Usage: SCRCTL [MODE]\n");
             printf("MODE:");
@@ -61,10 +92,10 @@ int main(int argc, char* argv[])
             printf("\n    /V  output version information and exit");
             return 0;
         }
-        if (strcmp(aStr, "/V") == 0 || strcmp(aStr, "--version") == 0)
+        if (argcmp(aStr, 'V') == 1 || strcmp(aStr, "--version") == 0)
         {
             printf("scrctl 1.0.1\n");
-            printf("Written by Kagurazaka Yashi. https://github.com/kagurazakayashi/NyarukoMiniTools");
+            printf("Written by Kagurazaka Yashi. https://github.com/kagurazakayashi/NyarukoMiniTools\n");
             printf("License Mulan PSL v2: http://license.coscl.org.cn/MulanPSL2\n");
             printf("This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.\n");
             return 0;
