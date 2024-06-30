@@ -1,6 +1,6 @@
 ﻿/*
 Copyright (c) 2024 KagurazakaYashi
-sleep is licensed under Mulan PSL v2.
+tspwd is licensed under Mulan PSL v2.
 You can use this software according to the terms and conditions of the Mulan PSL v2.
 You may obtain a copy of Mulan PSL v2 at:
 		 http://license.coscl.org.cn/MulanPSL2
@@ -25,6 +25,7 @@ See the Mulan PSL v2 for more details.
   - 例如 "C:\Program Files\OpenSSL-Win64";%(AdditionalLibraryDirectories)
 - 配置屬性 -> 連結器 -> 輸入 -> 附加依賴項
   - 例如 "C:\Program Files\OpenSSL-Win64\lib\VC\x64\MD\libcrypto.lib";kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)`
+- Download Win32/Win64 OpenSSL: https://slproweb.com/products/Win32OpenSSL.html
 */
 //#include <openssl/sha.h> // 註解掉SHA加密函式庫頭檔案，改用EVP
 #include <openssl/evp.h> // 匯入OpenSSL的加密函式庫頭檔案

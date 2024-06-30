@@ -1,6 +1,6 @@
 ﻿/*
 Copyright (c) 2020 KagurazakaYashi
-sleep is licensed under Mulan PSL v2.
+sleep-like is licensed under Mulan PSL v2.
 You can use this software according to the terms and conditions of the Mulan PSL v2.
 You may obtain a copy of Mulan PSL v2 at:
          http://license.coscl.org.cn/MulanPSL2
@@ -12,6 +12,10 @@ See the Mulan PSL v2 for more details.
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#if defined(__linux__) || defined(macintosh)
+#include <time.h>
+#include <unistd.h>
+#endif
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -43,6 +47,61 @@ void sleepNow(int sec, int display)
         if (display && i >= sec - 1)
         {
             printf("0\n");
+        }
+    }
+}
+
+
+/**
+ * @brief 使系統休眠指定的秒數，並可選擇性地顯示倒計時。
+ *
+ * 此函數根據不同的作業系統使用不同的方法來實現精確的休眠。
+ * 在Linux和Mac系統上，使用nanosleep函數以高精度的方式進行休眠。
+ * 在Windows系統上，使用QueryPerformanceCounter和QueryPerformanceFrequency函數來實現高精度的休眠。
+ *
+ * @param sec 等待的秒數。
+ * @param display 若為非零，則顯示倒計時。
+ * @param cpuSleep (Windows)一個短暫的睡眠，可以讓出CPU時間片給其他任務，從而減少CPU消耗。推薦1即可顯著降低CPU消耗。
+ */
+void sleepHighPrecision(int sec, int display, int cpuSleep)
+{
+    for (int i = 0; i < sec; i++)
+    {
+        if (display)
+        {
+            printf("%d ", sec - i); // 顯示剩餘秒數
+        }
+
+#if defined(__linux__) || defined(macintosh)
+        // 在Linux和Mac系統上使用nanosleep進行精確休眠
+        struct timespec ts;
+        ts.tv_sec = 1;    // 設定秒數
+        ts.tv_nsec = 0;   // 設定納秒數
+        nanosleep(&ts, NULL); // 休眠1秒
+#endif
+
+#ifdef _WIN32
+        // 在Windows系統上使用高精度計時器進行精確休眠
+        LARGE_INTEGER frequency; // 計數器頻率
+        LARGE_INTEGER start, end; // 開始和結束的計數值
+
+        QueryPerformanceFrequency(&frequency); // 獲取計數器頻率
+        QueryPerformanceCounter(&start); // 獲取當前計數值
+
+        while (1)
+        {
+            QueryPerformanceCounter(&end); // 獲取當前計數值
+            // 判斷是否達到1秒
+            if ((end.QuadPart - start.QuadPart) >= frequency.QuadPart)
+                break;
+            // 稍微休眠一小段時間，減少忙等待
+            Sleep(1);
+        }
+#endif
+
+        if (display && i >= sec - 1)
+        {
+            printf("0\n"); // 顯示倒計時結束
         }
     }
 }
@@ -136,6 +195,7 @@ int main(int argc, char* argv[])
     int total = 0;
     int i = 1;
     int display = 0;
+    int highPrecision = 0;
     if (argc < 2)
     {
         sleepNow(10, display);
@@ -151,6 +211,7 @@ int main(int argc, char* argv[])
         printf("Here NUMBER may be an arbitrary floating point number.\n");
         printf("Given two or more arguments, pause for the amount of time specified by the sum of their values.\n");
         printf("    /D  display the remaining time (seconds) every second.\n");
+        printf("    /H  Use high-precision timer (more CPU intensive). Not recommended to use with /D\n");
         printf("    /?  display this help and exit.\n");
         printf("    /V  output version information and exit.\n");
         return 0;
@@ -163,9 +224,14 @@ int main(int argc, char* argv[])
         printf("This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.\n");
         return 0;
     }
-    else if (argcmp(aStr, 'D') == 1 || strcmp(aStr, "--display") == 0)
+    if (argcmp(aStr, 'D') == 1 || strcmp(aStr, "--display") == 0)
     {
         display++;
+        i++;
+    }
+    if (argcmp(aStr, 'H') == 1 || strcmp(aStr, "--high-precision") == 0)
+    {
+        highPrecision++;
         i++;
     }
     for (; i < argc; i++)
@@ -193,6 +259,13 @@ int main(int argc, char* argv[])
         }
         total = timeStrToSec(num, unit);
     }
-    sleepNow(total, display);
+    if (highPrecision >= 1)
+    {
+        sleepHighPrecision(total, display, highPrecision);
+    }
+    else
+    {
+        sleepNow(total, display);
+    }
     return 0;
 }

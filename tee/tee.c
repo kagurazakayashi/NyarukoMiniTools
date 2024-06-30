@@ -1,6 +1,6 @@
 ﻿/*
 Copyright (c) 2024 KagurazakaYashi
-tee is licensed under Mulan PSL v2.
+tee-like is licensed under Mulan PSL v2.
 You can use this software according to the terms and conditions of the Mulan PSL v2.
 You may obtain a copy of Mulan PSL v2 at:
          http://license.coscl.org.cn/MulanPSL2
@@ -62,7 +62,10 @@ FILE** open_files(int argc, char* argv[], int file_start_index, const char* mode
             perror(argv[i]);
             // 關閉已成功打開的所有檔案
             for (int j = 0; j < i - file_start_index; j++) {
-                fclose(files[j]);
+                if (files[j] != 0)
+                {
+                    fclose(files[j]);
+                }
             }
             // 釋放已分配的記憶體
             free(files);
