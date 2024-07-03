@@ -3,7 +3,7 @@ Copyright (c) 2020 KagurazakaYashi
 scrctl is licensed under Mulan PSL v2.
 You can use this software according to the terms and conditions of the Mulan PSL v2.
 You may obtain a copy of Mulan PSL v2 at:
-         http://license.coscl.org.cn/MulanPSL2
+		 http://license.coscl.org.cn/MulanPSL2
 THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
 EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
 MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
@@ -41,24 +41,24 @@ void monitorPower(int powerMode)
  * @param k 欲匹配的字元（必須為大寫 char）
  * @return int 如果找到匹配的字元返回1，否則返回0
  */
-int argcmp(const char *str, char k) {
-    // 迴圈遍歷字串中的每個字元
-    while (*str) {
-        // 取得字串中當前字元的下一個字元
-        char c = *(str + 1);
-        // 如果字元是小寫字母，將其轉換為大寫
-        if (c >= 'a' && c <= 'z') {
-            c -= ('a' - 'A');
-        }
-        // 檢查當前字元是否為 '/' 或 '-' ，且下一個字元是否等於 k
-        if ((*str == '/' || *str == '-') && c == k) {
-            return 1; // 如果匹配，返回1
-        }
-        // 移動到字串中的下一個字元
-        str++;
-    }
-    // 如果未找到匹配的字元，返回0
-    return 0;
+int argcmp(const char* str, char k) {
+	// 迴圈遍歷字串中的每個字元
+	while (*str) {
+		// 取得字串中當前字元的下一個字元
+		char c = *(str + 1);
+		// 如果字元是小寫字母，將其轉換為大寫
+		if (c >= 'a' && c <= 'z') {
+			c -= ('a' - 'A');
+		}
+		// 檢查當前字元是否為 '/' 或 '-' ，且下一個字元是否等於 k
+		if ((*str == '/' || *str == '-') && c == k) {
+			return 1; // 如果匹配，返回1
+		}
+		// 移動到字串中的下一個字元
+		str++;
+	}
+	// 如果未找到匹配的字元，返回0
+	return 0;
 }
 
 
@@ -74,47 +74,47 @@ int argcmp(const char *str, char k) {
 int main(int argc, char* argv[])
 {
 #ifndef _WIN32
-    printf("This program only supports Windows.\n");
+	printf("This program only supports Windows.\n");
 	return 1;
 #endif
-    int powerMode = 2;
-    if (argc >= 2) {
-        char* aStr = argv[1];
-        if (strcmp(aStr, "/?") == 0 || argcmp(aStr, 'H') == 1 || strcmp(aStr, "--help") == 0)
-        {
-            printf("Usage: SCRCTL [MODE]\n");
-            printf("MODE:");
-            printf("\n   off  or  /0  Power Off (default)");
-            printf("\n    on  or  /1  Power On");
-            printf("\n   eco  or  /2  Low Power Mode");
-            printf("\n  lock  or  /3  Power Off and Lock");
-            printf("\n    /?  display this help and exit");
-            printf("\n    /V  output version information and exit");
-            return 0;
-        }
-        if (argcmp(aStr, 'V') == 1 || strcmp(aStr, "--version") == 0)
-        {
-            printf("scrctl 1.0.1\n");
-            printf("Written by Kagurazaka Yashi. https://github.com/kagurazakayashi/NyarukoMiniTools\n");
-            printf("License Mulan PSL v2: http://license.coscl.org.cn/MulanPSL2\n");
-            printf("This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.\n");
-            return 0;
-        }
-        if (strcmp(aStr, "/1") == 0 || strcmp(aStr, "on") == 0)
-        {
-            powerMode = -1;
-        }
-        else if (strcmp(aStr, "/2") == 0 || strcmp(aStr, "eco") == 0)
-        {
-            powerMode = 1;
-        }
-        else if (strcmp(aStr, "/3") == 0 || strcmp(aStr, "lock") == 0)
-        {
+	int powerMode = 2;
+	if (argc >= 2) {
+		char* aStr = argv[1];
+		if (strcmp(aStr, "/?") == 0 || argcmp(aStr, 'H') == 1 || strcmp(aStr, "--help") == 0)
+		{
+			printf("Usage: SCRCTL [MODE]\n");
+			printf("MODE:");
+			printf("\n   off  or  /0  Power Off (default)");
+			printf("\n    on  or  /1  Power On");
+			printf("\n   eco  or  /2  Low Power Mode");
+			printf("\n  lock  or  /3  Power Off and Lock");
+			printf("\n    /?  display this help and exit");
+			printf("\n    /V  output version information and exit");
+			return 0;
+		}
+		if (argcmp(aStr, 'V') == 1 || strcmp(aStr, "--version") == 0)
+		{
+			printf("scrctl 1.0.1\n");
+			printf("Written by Kagurazaka Yashi. https://github.com/kagurazakayashi/NyarukoMiniTools\n");
+			printf("License Mulan PSL v2: http://license.coscl.org.cn/MulanPSL2\n");
+			printf("This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.\n");
+			return 0;
+		}
+		if (strcmp(aStr, "/1") == 0 || strcmp(aStr, "on") == 0)
+		{
+			powerMode = -1;
+		}
+		else if (strcmp(aStr, "/2") == 0 || strcmp(aStr, "eco") == 0)
+		{
+			powerMode = 1;
+		}
+		else if (strcmp(aStr, "/3") == 0 || strcmp(aStr, "lock") == 0)
+		{
 #ifdef _WIN32
-            system("rundll32.exe user32.dll, LockWorkStation");
+			system("rundll32.exe user32.dll, LockWorkStation");
 #endif
-        }
-    }
-    monitorPower(powerMode);
-    return 0;
+		}
+	}
+	monitorPower(powerMode);
+	return 0;
 }

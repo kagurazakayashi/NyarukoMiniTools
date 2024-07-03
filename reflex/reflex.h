@@ -3,7 +3,7 @@
 
 /**
  * 處理接收到的訊號
- * @param sig 接收到的訊號代碼
+ * @param sig 接收到的訊號程式
  */
 void sigHandle(int sig);
 

@@ -4,21 +4,21 @@
 #include <stdio.h>
 
 /**
- * @brief 將資料寫入多個文件。
- * 
+ * @brief 將資料寫入多個檔案。
  *
- * 此函式將提供的資料寫入到一組文件中。
+ *
+ * 此函式將提供的資料寫入到一組檔案中。
  *
  * @param data      指向要寫入的資料的字串指標。
- * @param files     文件指標的陣列，表示要寫入的文件。
- * @param num_files 文件數量，表示文件指標陣列中的文件數量。
+ * @param files     檔案指標的陣列，表示要寫入的檔案。
+ * @param num_files 檔案數量，表示檔案指標陣列中的檔案數量。
  */
 void write_to_files(const char* data, FILE** files, int num_files);
 
 /**
- * @brief 打開多個檔案並返回檔案指標的陣列
+ * @brief 開啟多個檔案並返回檔案指標的陣列
  *
- * 此函式接收命令列引數，從指定索引開始打開檔案並以指定模式開啟。
+ * 此函式接收命令列引數，從指定索引開始開啟檔案並以指定模式開啟。
  *
  * @param argc 命令列引數的數量
  * @param argv 命令列引數的陣列

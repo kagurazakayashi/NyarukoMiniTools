@@ -33,7 +33,7 @@ unsigned int seedi = 0;
  *  - 大寫字母 'S' 或小寫字母 's' 返回 4
  *  - 其他大寫字母返回 1
  *  - 其他小寫字母返回 2
- *  - 非字母字符返回 0
+ *  - 非字母字元返回 0
  *
  * @param nowChar 指向要判斷的字元的指標
  * @return short 表示字元模式的數值
@@ -59,7 +59,7 @@ short charMode(char* nowChar)
 	if (nowCharI >= 97 && nowCharI <= 122) { // a-z
 		return 2;
 	}
-	// 非字母字符返回 0
+	// 非字母字元返回 0
 	return 0;
 }
 
@@ -68,7 +68,7 @@ short charMode(char* nowChar)
  * @brief 生成選擇字元
  *
  * 此函式根據輸入的字元串生成選擇的字元集合。
- * 字元串中的每個字元都會根據其模式添加相應範圍的字元到選擇集合中。
+ * 字元串中的每個字元都會根據其模式新增相應範圍的字元到選擇集合中。
  *
  * @param selArgv 輸入的字元串。
  */
@@ -78,22 +78,22 @@ void genSelect(char* selArgv)
 	for (j = 0; j < (int)strlen(selArgv); j++) // 遍歷輸入字元串的每個字元
 	{
 		short nowMode = charMode((char*)selArgv[j]); // 獲取當前字元的模式
-		if (nowMode == 1) { // 如果模式為1，添加大寫字母A-Z
+		if (nowMode == 1) { // 如果模式為1，新增大寫字母A-Z
 			for (k = 65; k <= 90; k++) {
 				allSelect[allSelectI++] = k;
 			}
 		}
-		else if (nowMode == 2) { // 如果模式為2，添加小寫字母a-z
+		else if (nowMode == 2) { // 如果模式為2，新增小寫字母a-z
 			for (k = 97; k <= 122; k++) {
 				allSelect[allSelectI++] = k;
 			}
 		}
-		else if (nowMode == 3) { // 如果模式為3，添加數字0-9
+		else if (nowMode == 3) { // 如果模式為3，新增數字0-9
 			for (k = 48; k <= 57; k++) {
 				allSelect[allSelectI++] = k;
 			}
 		}
-		else if (nowMode == 4) { // 如果模式為4，添加特殊字元
+		else if (nowMode == 4) { // 如果模式為4，新增特殊字元
 			for (k = 33; k <= 47; k++) {
 				allSelect[allSelectI++] = k;
 			}
@@ -182,14 +182,14 @@ int getRandomNumberHardware(int min, int max) {
 	}
 
 #else
-	// 打開/dev/urandom設備檔以讀取隨機數
+	// 開啟/dev/urandom裝置檔以讀取隨機數
 	int fd = open("/dev/urandom", O_RDONLY);
 	if (fd != -1) {
-		// 從設備檔讀取隨機數
+		// 從裝置檔讀取隨機數
 		if (read(fd, &rand_num, sizeof(rand_num)) == -1) {
 			hardware_rng_available = 0;
 		}
-		// 關閉設備檔
+		// 關閉裝置檔
 		close(fd);
 	}
 	else {
@@ -211,7 +211,7 @@ int getRandomNumberHardware(int min, int max) {
 /**
  * @brief 檢查硬體隨機數生成器是否可用
  *
- * 這個函式調用硬體隨機數生成器，並檢查生成的隨機數是否在有效範圍內。
+ * 這個函式呼叫硬體隨機數生成器，並檢查生成的隨機數是否在有效範圍內。
  * 如果硬體隨機數生成器不可用，則會顯示警告訊息並返回0；否則，返回1。
  *
  * @return int 返回1表示硬體隨機數生成器可用，返回0表示不可用。
@@ -245,24 +245,24 @@ int chkRandomNumberHardware()
  * @param k 欲匹配的字元（必須為大寫 char）
  * @return int 如果找到匹配的字元返回1，否則返回0
  */
-int argcmp(const char *str, char k) {
-    // 迴圈遍歷字串中的每個字元
-    while (*str) {
-        // 取得字串中當前字元的下一個字元
-        char c = *(str + 1);
-        // 如果字元是小寫字母，將其轉換為大寫
-        if (c >= 'a' && c <= 'z') {
-            c -= ('a' - 'A');
-        }
-        // 檢查當前字元是否為 '/' 或 '-' ，且下一個字元是否等於 k
-        if ((*str == '/' || *str == '-') && c == k) {
-            return 1; // 如果匹配，返回1
-        }
-        // 移動到字串中的下一個字元
-        str++;
-    }
-    // 如果未找到匹配的字元，返回0
-    return 0;
+int argcmp(const char* str, char k) {
+	// 迴圈遍歷字串中的每個字元
+	while (*str) {
+		// 取得字串中當前字元的下一個字元
+		char c = *(str + 1);
+		// 如果字元是小寫字母，將其轉換為大寫
+		if (c >= 'a' && c <= 'z') {
+			c -= ('a' - 'A');
+		}
+		// 檢查當前字元是否為 '/' 或 '-' ，且下一個字元是否等於 k
+		if ((*str == '/' || *str == '-') && c == k) {
+			return 1; // 如果匹配，返回1
+		}
+		// 移動到字串中的下一個字元
+		str++;
+	}
+	// 如果未找到匹配的字元，返回0
+	return 0;
 }
 
 

@@ -25,7 +25,7 @@ void replaceSubstringWithNumber(char* aStr, int aLen, int num, char* rchar, int 
  * @brief 根據提供的時間結構(struct tm)替換字串中的時間標記（如 "yyyy", "MM" 等）。
  *
  * @param aStr 指向要進行替換操作的字串。
- * @param time 包含日期和時間信息的時間結構。
+ * @param time 包含日期和時間資訊的時間結構。
  */
 void replaceTimeMarkers(char* aStr, struct tm time);
 
