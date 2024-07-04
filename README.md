@@ -1,4 +1,4 @@
-# NyarukoMiniTools
+# ![icon](install_script\icon.ico) NyarukoMiniTools
 
 - 存放一些超小的 Windows 程序的仓库。
 - 这些工具全都是 C 语言编写。
@@ -12,27 +12,29 @@
 
 我在平时使用 Windows 制作一些 bat 批处理脚本时，会遇到需要使用某些系统没有提供的命令。因此创建了本仓库，存储一些实用工具。例如：
 
-- bat 中获取时间值会因区域设置而遇到兼容性问题，单独获取某个时间或日期会麻烦，而 `datetime.exe "yyyy-MM-dd HH:mm:ss"` 解决了它。
+- bat 中获取时间值会因区域设置而遇到兼容性问题，单独获取某个时间或日期会麻烦，而 `datetime.exe "yyyy-MM-dd HH:mm:ss"` 解决了它。例如获得现在的分钟数只需要 `datetime.exe mm` 。
 - 有一个软件中的 exe 组件我不想让其发挥功能，而又不想引发权限之类的错误（例如替换软件中的广告弹窗程序），用 `null.exe` 替换它，它就什么功能都没有了，并且系统视为正常执行。
 - 我想生成一个随机密码，但 Windows 上没有 `pwgen` 命令，那么生成 1 个 64 位密码就用 `pwgen.exe 64 1` 吧。它还支持硬件随机数生成器。
-- 我想开发一个和控制台程序交互的 GUI 软件，输入什么就回复什么的 `reflex.exe` 是一个好办法。它还支持持续输出时间模式。
-- 我有一个路径 `\dir\path\` 想转换为 `/dir/path` ，`repstr.exe \dir\path\ \ /` 即可搞定。可以用来快速替换各种英文字符串。
-- 我想一键息屏，双击启动 `scrctl.exe` 即可。配合 `sleep.exe` 命令加个延迟可以防止刚运行后误滑鼠标而中止。它还支持高精度模式，防范因卡顿等导致的失真。
+- 我想开发一个和控制台程序交互的 GUI 软件，输入什么就回复什么的 `reflex.exe` 是一个好办法。它还支持持续输出时间模式 `reflex.exe /T` 。
+- 我有一个路径 `\dir\path\` 想转换为 `/dir/path/` ，`repstr.exe \dir\path\ \ /` 即可搞定。可以用来快速替换各种英文字符串。
+- 我想等几秒再继续运行下一条命令，但 Windows 上没有 `sleep` 命令，而 `timeout` 在旧版本上没有并且会输出多余信息，那么就用 `sleep.exe` 吧。它还支持高精度模式（时间同步）和标注时间单位，例如等待一分钟用 `sleep.exe 1m` 即可，你也可以加上 `/D` 显示倒计时。
+- 我想一键息屏，双击启动 `scrctl.exe` 即可。配合 `sleep.exe` 命令加个延迟可以防止刚运行后误滑鼠标而中止。
 - 我运行一个命令，又想实时看到它的输出，又想实时记录到日志文件，但 Windows 上没有 `tee` 命令，那么就用 `要执行的命令 2>&1 | tee.exe 日志文件.log` 吧。
-- 我和我的朋友约好，只要在这个小时或者这天，传输的东西都用 `tspwd.exe` 来生成密码，我们就再也不需要互相告诉对方密码了，它还是个动态密码。只需事先约定好预定义“盐”。
+- 我和我的朋友约好，只要在这个小时或者这天，传输的东西都用 `tspwd.exe` 来生成密码，我们就再也不需要互相告诉对方密码了，它还是个动态密码。只需事先约定好预定义“盐”。或者从公司电脑复制到U盘，回家再移动到电脑的临时传输文件的场合，也可以使用它的动态密码来临时加密。
 
 ## Scenario Example
 
 When I usually use Windows to make some bat batch scripts, I will encounter the need to use some commands that are not provided by the system. Therefore, this repository was created to store some practical tools. For example:
 
-- Obtaining time values ​​in bat will encounter compatibility issues due to regional settings. It is troublesome to obtain a certain time or date separately, and `datetime.exe "yyyy-MM-dd HH:mm:ss"` solves it.
+- Obtaining time values ​​in bat will encounter compatibility issues due to regional settings. It is troublesome to obtain a certain time or date separately, and `datetime.exe "yyyy-MM-dd HH:mm:ss"` solves it. For example, to get the minute now, just use `datetime.exe mm`.
 - There is an exe component in the software that I don't want to function, but I don't want to cause permissions errors (for example, replacing the ad pop-up program in the software). Replace it with `null.exe`, it will have no function, and the system will treat it as normal execution.
 - I want to generate a random password, but there is no `pwgen` command on Windows, so use `pwgen.exe 64 1` ​​to generate a 64-bit password. It also supports hardware random number generators.
-- I want to develop a GUI software that interacts with console programs. `reflex.exe` is a good way to reply to what you enter. It also supports continuous output time mode.
-- I have a path `\dir\path\` that I want to convert to `/dir/path`, and `repstr.exe \dir\path\ \ /` can do it. It can be used to quickly replace various English strings.
-- I want to turn off the screen with one click, and double-click to start `scrctl.exe`. Adding a delay with the `sleep.exe` command can prevent the program from being terminated by accidentally sliding the mouse just after it is run. It also supports high-precision mode to prevent distortion caused by lags, etc.
+- I want to develop a GUI software that interacts with console programs. `reflex.exe` is a good way to reply to what you enter. It also supports continuous output time mode `reflex.exe /T` .
+- I have a path `\dir\path\` that I want to convert to `/dir/path/`, and `repstr.exe \dir\path\ \ /` can do it. It can be used to quickly replace various English strings.
+- I want to wait a few seconds before continuing to run the next command, but there is no `sleep` command on Windows, and `timeout` does not exist on old versions and will output redundant information, so use `sleep.exe`. It also supports high-precision mode (time synchronization) and time units. For example, to wait for one minute, use `sleep.exe 1m`. You can also add `/D` to display the countdown.
+- I want to turn off the screen with one click, and double-click to start `scrctl.exe`. Adding a delay with the `sleep.exe` command can prevent the program from being terminated by accidentally sliding the mouse just after it is run.
 - I run a command and want to see its output in real time and record it to a log file in real time, but there is no `tee` command on Windows, so use `command 2>&1 | tee.exe output.log`.
-- My friend and I agreed that as long as we use `tspwd.exe` to generate passwords for everything we transmit during this hour or this day, we will no longer need to tell each other the password, and it is still a dynamic password. Just agree on a predefined "salt" in advance.
+- My friend and I agreed that as long as we use `tspwd.exe` to generate passwords for everything we transmit during this hour or this day, we will no longer need to tell each other the password, and it is still a dynamic password. Just agree on a predefined "salt" in advance. Or when you need to temporarily transfer files by copying them from a company computer to a USB drive and then moving them to your computer when you get home, you can also use its dynamic password to temporarily encrypt them.
 
 ## 安裝
 
@@ -293,30 +295,6 @@ pwgen-like:功能类似于 pwgen: 快捷生成由随机字符组成的密码
 - Demo: `tspwd m "aabbcc"`
   - Generate a SHA256 temporary password for the current month, and add a fixed password `aabbcc` to prevent reverse engineering.
 
-### 编译
-
-请根据 openssl 具体安装位置修改项目属性：
-
-- 配置属性 -> VC++ 目录 -> 包含目录
-- 配置属性 -> VC++ 目录 -> 库目录
-- 配置属性 -> C/C++ -> 常规 -> 附加包含目录
-- 配置属性 -> 链接器 -> 常规 -> 附加库目录
-- 配置属性 -> 链接器 -> 附加依赖项
-
-下载 Win32/Win64 OpenSSL: <https://slproweb.com/products/Win32OpenSSL.html>
-
-### Build
-
-Please modify the project properties according to the specific installation location of openssl:
-
-- Configuration Properties -> VC++ Directories -> Include Directories
-- Configuration Properties -> VC++ Directories -> Library Directories
-- Configuration Properties -> C/C++ -> General -> Additional Include Directories
-- Configuration Properties -> Linker -> General -> Additional Library Directories
-- Configuration Properties -> Linker -> Additional Dependencies
-
-- Download Win32/Win64 OpenSSL: <https://slproweb.com/products/Win32OpenSSL.html>
-
 ## ![tee](tee/icon1.ico) tee.exe
 
 - tee-like:功能类似于 tee
@@ -339,19 +317,22 @@ Please modify the project properties according to the specific installation loca
   - `/?`: display this help and exit
   - `/V`: output version information and exit
 
+## ![path](install_script\path.ico) path.exe
+
+- 通过命令添加或删除 PATH 变量中的路径。
+- Add or remove paths from the PATH variable through commands.
+
+请前往 Please go to: [kagurazakayashi/PathEd](https://github.com/kagurazakayashi/PathEd/blob/master/README.md)
+
 ## 其他说明
 
-- 支持 x86, x64 ，不支持其他平台。
+- 支持 Win32 x86, x64, ARM, ARM64, ARM64EC
   - 程序制作环境： Windows 11 / VS 2022
 - 由于 C 语言共通性，部分经少许修改或无需修改可以在 Linux / macOS 中运行。
 
 ## Other instructions
 
-- Due to program size considerations, the program icon uses the smallest size (16x16@1 bit). When Windows Explorer displays its icon, the following may occur. This is a bug in the Explorer program:
-  - The icon appears as the icon of any other installed application.
-  - No icon.
-  - "Blank document" icon.
-- Supports x86, x64, other platforms are not supported.
+- Supports Win32 x86, x64, ARM, ARM64, ARM64EC
   - Programming environment: Windows 11 / VS 2022
 - Due to the commonality of C language, some parts can run on Linux / macOS with little or no modification.
 

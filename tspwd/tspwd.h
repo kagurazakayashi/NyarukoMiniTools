@@ -1,26 +1,24 @@
 ﻿#ifndef TSPWD_H
 #define TSPWD_H
 
-#include <time.h>
-
 /**
- * @brief 計算輸入字串的 SHA-256 哈希值並以十六進位字串格式輸出
- *
- * @param string        輸入的字串
- * @param outputBuffer  儲存輸出哈希值的緩衝區，必須有 65 字元長度
- *
- * 使用 OpenSSL 函式庫進行 SHA-256 哈希運算。包含初始化、更新和最終運算步驟。
- * 若任何步驟失敗，會呼叫 handleErrors() 進行錯誤處理。
- * 最終的哈希值會轉換為十六進位字串格式並存入 outputBuffer。
- */
-void sha256(char* string, char outputBuffer[65]);
-
-/**
- * @brief 產生哈希值
+ * @brief 產生雜湊值
  * @param format 指定時間格式的字串
  * @param salt 使用的鹽值
- * @param hashOutput 用來儲存生成的SHA-256哈希值
+ * @param hashOutput 用來儲存生成的SHA-256雜湊值
  */
 void generate_hash(const char* format, const char* salt, char* hashOutput);
+
+/**
+ * @brief 比較給定字串中的每個字元是否與指定字元匹配
+ *
+ * 此函式會檢查給定字串中的每個字元，並比較它是否與指定的字元k匹配。
+ * 如果匹配，則返回1；否則返回0。
+ *
+ * @param str 欲檢查的字串
+ * @param k 欲匹配的字元（必須為大寫 char）
+ * @return int 如果找到匹配的字元返回1，否則返回0
+ */
+int argcmp(const char* str, char k);
 
 #endif // TSPWD_H

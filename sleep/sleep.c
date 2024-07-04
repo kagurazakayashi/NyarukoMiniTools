@@ -193,9 +193,10 @@ int argcmp(const char* str, char k) {
 int main(int argc, char* argv[])
 {
 	int total = 0;
-	int i = 1;
-	int display = 0;
-	int highPrecision = 0;
+	short i = 1;
+	short j = 0;
+	short display = 0;
+	short highPrecision = 0;
 	if (argc < 2)
 	{
 		sleepNow(10, display);
@@ -240,7 +241,7 @@ int main(int argc, char* argv[])
 		int inLen = (int)strlen(inNum);
 		char num[10] = { '\0' };
 		char unit = 's';
-		for (int j = 0; j < inLen; j++)
+		for (j = 0; j < inLen; j++)
 		{
 			char nowchar = inNum[j];
 			if ((nowchar >= 48 && nowchar <= 57) || nowchar == 46)
