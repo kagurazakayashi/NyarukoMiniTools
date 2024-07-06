@@ -1,0 +1,3 @@
+[submodule "path"]
+	path = path
+	url = https://github.com/kagurazakayashi/PathEd.git
