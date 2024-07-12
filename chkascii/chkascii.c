@@ -13,7 +13,7 @@ See the Mulan PSL v2 for more details.
 #include <stdlib.h>
 #include <string.h>
 
-#define BUFFER_SIZE 8000  // 定義緩衝區大小（使用者輸入模式的最大字元數量）
+#define BUFFER_SIZE 1484  // 定義緩衝區大小（使用者輸入模式的最大字元數量）
 
 /**
  * @brief 處理字元並更新相關計數和位置。
@@ -80,28 +80,47 @@ void check_ascii(FILE* fp, short verbose, const char* fn) {
  * @return 返回處理的字元總數
  */
 int check_ascii_input(short verbose) {
-    int c;  // 當前處理的字元
-    unsigned long yi = 0, ni = 0, ai = 0, row = 1, column = 1;  // 統計變數，分別表示ASCII字元數、非ASCII字元數和總字元數
-    char input[BUFFER_SIZE];  // 儲存輸入的文字
-    const char* ptr = input;  // 指向輸入文字的指標
+	int c;  // 當前處理的字元
+	unsigned long yi = 0, ni = 0, ai = 0, row = 1, column = 1;  // 統計變數，分別表示ASCII字元數、非ASCII字元數和總字元數
+	char input[BUFFER_SIZE * 10];  // 儲存輸入的文字
+	char buffer[BUFFER_SIZE];  // 暂存输入的缓冲区
+	const char* ptr;  // 指向輸入文字的指標
+	int empty_line_count = 0;  // 用于记录连续空行的计数器
 
-    // 提示使用者輸入文字
-    printf("Please input text:\n");
-    fgets(input, sizeof(input), stdin);  // 獲取使用者輸入的文字
-    size_t len = strlen(input);  // 獲取輸入文字的長度
-    if (len > 0 && input[len - 1] == '\n') {
-        input[len - 1] = '\0';  // 去除輸入文字末尾的換行符
-    }
+	input[0] = '\0';  // 初始化输入缓冲区为空字符串
 
-    // 遍歷輸入文字中的每一個字元
-    while ((c = *ptr++) != '\0') {
-        // 處理字元並更新統計資料
-        process_character(c, &yi, &ni, &ai, &row, &column, verbose);
-    }
+	// 提示使用者輸入文字
+	printf("\nPlease input text (Press Enter twice to end input, or exit if there is no content):\n");
 
-    // 輸出統計結果
-    printf("\n   Ascii = %lu\nNo Ascii = %lu\n     All = %lu\n", yi, ni, ai);
-    return ai;  // 返回處理的字元總數
+	while (empty_line_count < 1) {
+		if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+			break;  // 如果获取输入失败，跳出循环
+		}
+
+		size_t len = strlen(buffer);  // 獲取輸入文字的長度
+		if (len == 1 && buffer[0] == '\n') {
+			empty_line_count++;  // 如果输入为空行，计数器加一
+		}
+		else {
+			empty_line_count = 0;  // 如果输入非空，重置计数器
+		}
+
+		if (empty_line_count < 1) {
+			strcat_s(input, sizeof(input), buffer);  // 将缓冲区内容追加到输入缓冲区
+		}
+	}
+
+	ptr = input;  // 重置指向输入文字的指针
+
+	// 遍历输入文字中的每一个字元
+	while ((c = *ptr++) != '\0') {
+		// 處理字元並更新統計資料
+		process_character(c, &yi, &ni, &ai, &row, &column, verbose);
+	}
+
+	// 輸出統計結果
+	printf("\n   Ascii = %lu\nNo Ascii = %lu\n     All = %lu\n", yi, ni, ai);
+	return ai;  // 返回處理的字元總數
 }
 
 

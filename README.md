@@ -201,8 +201,10 @@ After running, a statistical report output will be given.
   - `/?`: display this help and exit
   - `/V`: output version information and exit
 - If `filepath` is not provided, the mode will be entered to accept user keyboard input.
+  - Press Enter twice to end input and run statistics,
+  - If you press Enter without entering anything, the program will exit.
 
-## ![path](install_script\path.ico) path.exe
+## ![path](install_script/path.ico) path.exe
 
 Add or remove paths from the PATH variable through commands.
 

@@ -201,8 +201,10 @@ tee-like: 功能类似于 `tee` 。 将标准输入复制到每个文件，并�
   - `/?`: 显示此帮助信息
   - `/V`: 显示版本信息
 - 如果不提供 `filepath` ，将进入接受用户键盘输入模式。
+  - 按两下回车时结束输入并运行统计，
+  - 如果什么都不输入直接按回车，将退出程序。
 
-## ![path](install_script\path.ico) path.exe
+## ![path](install_script/path.ico) path.exe
 
 通过命令添加或删除 PATH 变量中的路径。
 
