@@ -1,28 +1,22 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <dirent.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <signal.h>
 #include <limits.h>
 
-// #if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64)
+#include <windows.h>
+#include <tchar.h>
 #define FILE_SEPARATOR "\\"
-// #else
-//     #define FILE_SEPARATOR "/"
-// #endif
-
-//      UNITSIZE_FAT   32KB  64KB
-#define UNITSIZE_FAT   "32768-65535,65536-131071"
-//      UNITSIZE_FAT32 512 1024 2048 4096 8192 16KB
-#define UNITSIZE_FAT32 "512-1023,1024-2047,2048-4095,4096-8191,8192-16383,16384-32767"
-//      UNITSIZE_EXFAT 64KB  128KB  256KB  512KB  1024KB  2048KB  4096KB  8192KB  10384KB  32768KB
-#define UNITSIZE_EXFAT "65536-131071,131072-262143,262144-524287,524288-1048575,1048576-2097151,2097152-4194303,4194304-8388607,8388608-16777215,16777216-33554431,33554432-67108863"
-//      UNITSIZE_NTFS  512 1024 2048 4096 8192 16KB  32KB  64KB  128KB  256KB  512KB  1024KB  2048KB
-#define UNITSIZE_NTFS  "512-1023,1024-2047,2048-4095,4096-8191,8192-16383,16384-32767,32768-65535,65536-131071,131072-262143,262144-524287,524288-1048575,1048576-2097151,2097152-4194303"
+#else
+#include <dirent.h>
+#include <unistd.h>
+#define FILE_SEPARATOR "/"
+#endif
 
 #define MAX_INTERVALS 16 // 指定的檔案大小區間的最大數量
+#define MAX_PATHSIZE 4096 // 最大路徑長度 MAX_PATH
 
 typedef struct {
     int min_size;
@@ -32,46 +26,120 @@ typedef struct {
 
 volatile sig_atomic_t stop;
 
+int successful_dirs = 0;
+int failed_dirs = 0;
+int successful_files = 0;
+int failed_files = 0;
+long all_size = 0;
+
+char* ConvertWCharToChar(const WCHAR* wStr) {
+    if (wStr == NULL) {
+        return NULL;
+    }
+
+    int bufferSize = WideCharToMultiByte(CP_ACP, 0, wStr, -1, NULL, 0, NULL, NULL);
+    if (bufferSize == 0) {
+        return NULL;
+    }
+
+    char* mbStr = (char*)malloc(bufferSize * sizeof(char));
+    if (mbStr == NULL) {
+        return NULL;
+    }
+
+    int result = WideCharToMultiByte(CP_ACP, 0, wStr, -1, mbStr, bufferSize, NULL, NULL);
+    if (result == 0) {
+        free(mbStr);
+        return NULL;
+    }
+
+    return mbStr;
+}
+
+WCHAR* ConvertCharToWChar(const char* mbStr) {
+    if (mbStr == NULL) {
+        return NULL;
+    }
+
+    int bufferSize = MultiByteToWideChar(CP_ACP, 0, mbStr, -1, NULL, 0);
+    if (bufferSize == 0) {
+        return NULL;
+    }
+
+    WCHAR* wStr = (WCHAR*)malloc(bufferSize * sizeof(WCHAR));
+    if (wStr == NULL) {
+        return NULL;
+    }
+
+    int result = MultiByteToWideChar(CP_ACP, 0, mbStr, -1, wStr, bufferSize);
+    if (result == 0) {
+        free(wStr);
+        return NULL;
+    }
+
+    return wStr;
+}
+
 void handle_sigint(int sig) {
     stop = 1;
 }
 
 void ensure_trailing_slash(char* path) {
+    if (path == NULL) return;
+    
     size_t len = strlen(path);
     if (len == 0) return;
-    // unify_file_separator(path);
     char last_char = path[len - 1];
     if (last_char != '\\' && last_char != '/') {
+#if defined(_WIN32) || defined(_WIN64)
+        strcat_s(path, 1024, FILE_SEPARATOR);
+#else
         strcat(path, FILE_SEPARATOR);
+#endif
     }
 }
 
 void parse_intervals(const char* intervals_str, Interval* intervals, int* num_intervals) {
     char* intervals_copy = strdup(intervals_str);
+    char* context = NULL;
+#if defined(_WIN32) || defined(_WIN64)
+    char* token = strtok_s(intervals_copy, ",", &context);
+#else
     char* token = strtok(intervals_copy, ",");
+#endif
     while (token != NULL && *num_intervals < MAX_INTERVALS) {
+#if defined(_WIN32) || defined(_WIN64)
+        sscanf_s(token, "%d-%d", &intervals[*num_intervals].min_size, &intervals[*num_intervals].max_size);
+#else
         sscanf(token, "%d-%d", &intervals[*num_intervals].min_size, &intervals[*num_intervals].max_size);
+#endif
         intervals[*num_intervals].count = 0;
         (*num_intervals)++;
+#if defined(_WIN32) || defined(_WIN64)
+        token = strtok_s(NULL, ",", &context);
+#else
         token = strtok(NULL, ",");
+#endif
     }
     free(intervals_copy);
 }
 
-void scan_file(const char* path, int show_errors, Interval* intervals, int num_intervals, int* successful_files, int* failed_files, long* all_size) {
+void scan_file(const char* path, int show_errors, Interval* intervals, int num_intervals) {
+    if (path == NULL) return;
+
     struct stat file_stat;
 
     if (stat(path, &file_stat) == -1) {
         if (show_errors) perror("stat");
-        (*failed_files)++;
+        failed_files++;
         return;
     }
 
-    (*successful_files)++;
+    successful_files++;
 
     for (int i = 0; i < num_intervals; i++) {
         int size = file_stat.st_size;
-        (*all_size) += size;
+        all_size += size;
         if (size >= intervals[i].min_size && size <= intervals[i].max_size) {
             intervals[i].count++;
             break;
@@ -79,7 +147,64 @@ void scan_file(const char* path, int show_errors, Interval* intervals, int num_i
     }
 }
 
-void scan_directory(const char* path, int include_subdirs, int show_errors, Interval* intervals, int num_intervals, int* successful_dirs, int* failed_dirs, int* successful_files, int* failed_files, long* all_size) {
+#if defined(_WIN32) || defined(_WIN64)
+void scan_directory(const char* path, int include_subdirs, int show_errors, Interval* intervals, int num_intervals) {
+    if (path == NULL) return;
+
+    WIN32_FIND_DATA find_data;
+    HANDLE hFind;
+    char search_path[MAX_PATHSIZE];
+
+    snprintf(search_path, sizeof(search_path), "%s*.*", path);
+
+    if ((hFind = FindFirstFile(ConvertCharToWChar(search_path), &find_data)) == INVALID_HANDLE_VALUE) {
+        if (show_errors) perror("FindFirstFile");
+        failed_dirs++;
+        return;
+    }
+
+    successful_dirs++;
+
+    do {
+        char* fileName = ConvertWCharToChar(find_data.cFileName);
+        if (fileName == NULL) continue;
+        
+        if (strcmp(fileName, ".") == 0 || strcmp(fileName, "..") == 0) {
+            free(fileName);
+            continue;
+        }
+
+        char full_path[MAX_PATHSIZE];
+        if (path != NULL) {
+            snprintf(full_path, sizeof(full_path), "%s%s", path, fileName);
+        } else {
+            fprintf(stderr, "Error: path is NULL.\n");
+            free(fileName);
+            continue;
+        }
+
+        if (find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+            if (include_subdirs) {
+                ensure_trailing_slash(full_path);
+                if (show_errors) printf("scanning directory: %s\n", full_path);
+                scan_directory(full_path, include_subdirs, show_errors, intervals, num_intervals);
+            }
+        }
+        else {
+            if (show_errors) printf("scanning file: %s\n", full_path);
+            scan_file(full_path, show_errors, intervals, num_intervals);
+        }
+
+        free(fileName);
+    } while (FindNextFile(hFind, &find_data) != 0);
+
+    FindClose(hFind);
+    return;
+}
+#else
+void scan_directory(const char* path, int include_subdirs, int show_errors, Interval* intervals, int num_intervals) {
+    if (path == NULL) return;
+
     DIR* dir;
     struct dirent* entry;
     struct stat file_stat;
@@ -87,24 +212,23 @@ void scan_directory(const char* path, int include_subdirs, int show_errors, Inte
 
     if ((dir = opendir(path)) == NULL) {
         if (show_errors) perror("opendir");
-        (*failed_dirs)++;
+        failed_dirs++;
         return;
     }
 
-    (*successful_dirs)++;
+    successful_dirs++;
 
     while ((entry = readdir(dir)) != NULL) {
-        // Skip "." and ".."
         if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
             continue;
         }
         snprintf(full_path, sizeof(full_path), "%s%s", path, entry->d_name);
         if (stat(full_path, &file_stat) == -1) {
             if (show_errors) {
-                if (show_errors) printf("scanning error: %s\n", full_path);
+                printf("scanning error: %s\n", full_path);
                 perror("stat");
             }
-            (*failed_files)++;
+            failed_files++;
             continue;
         }
 
@@ -112,17 +236,18 @@ void scan_directory(const char* path, int include_subdirs, int show_errors, Inte
             if (include_subdirs) {
                 ensure_trailing_slash(full_path);
                 if (show_errors) printf("scanning directory: %s\n", full_path);
-                scan_directory(full_path, include_subdirs, show_errors, intervals, num_intervals, successful_dirs, failed_dirs, successful_files, failed_files, all_size);
+                scan_directory(full_path, include_subdirs, show_errors, intervals, num_intervals);
             }
         }
         else {
             if (show_errors) printf("scanning file: %s\n", full_path);
-            scan_file(full_path, show_errors, intervals, num_intervals, successful_files, failed_files, all_size);
+            scan_file(full_path, show_errors, intervals, num_intervals);
         }
     }
 
     closedir(dir);
 }
+#endif
 
 const char* format_size(int size) {
     static char output[20];
@@ -137,7 +262,7 @@ const char* format_size(int size) {
     return output;
 }
 
-void display_intervals(Interval* intervals, int num_intervals, int successful_dirs, int failed_dirs, int successful_files, int failed_files, long all_size) {
+void display_intervals(Interval* intervals, int num_intervals) {
     for (int i = 0; i < num_intervals; i++) {
         if (intervals[i].min_size == -1) {
             printf("Files with size < %d bytes (%s): %d\n", intervals[i].max_size + 1, format_size(intervals[i].max_size + 1), intervals[i].count);
@@ -151,7 +276,7 @@ void display_intervals(Interval* intervals, int num_intervals, int successful_di
     }
     printf("Directories: All=%d, Successful=%d, Failed=%d\n", successful_dirs + failed_dirs, successful_dirs, failed_dirs);
     printf("Files: All=%d, Successful=%d, Failed=%d\n", successful_files + failed_files, successful_files, failed_files);
-    printf("Total size: %s bytes (%ld)\n", all_size, format_size(all_size));
+    printf("Total size: %s bytes (%ld)\n", format_size(all_size), all_size);
 }
 
 int main(int argc, char* argv[]) {
@@ -163,8 +288,12 @@ int main(int argc, char* argv[]) {
     signal(SIGINT, handle_sigint);
 
     char directory_path[1024];
+#if defined(_WIN32) || defined(_WIN64)
+    strncpy_s(directory_path, sizeof(directory_path), argv[1], _TRUNCATE);
+#else
     strncpy(directory_path, argv[1], sizeof(directory_path) - 1);
     directory_path[sizeof(directory_path) - 1] = '\0';
+#endif
     ensure_trailing_slash(directory_path);
 
     int include_subdirs = 0;
@@ -198,12 +327,10 @@ int main(int argc, char* argv[]) {
     intervals[num_intervals].count = 0;
     num_intervals++;
 
-    int successful_dirs = 0, failed_dirs = 0, successful_files = 0, failed_files = 0;
-    long all_size = 0;
-    scan_directory(directory_path, include_subdirs, show_errors, intervals, num_intervals, &successful_dirs, &failed_dirs, &successful_files, &failed_files, &all_size);
+    scan_directory(directory_path, include_subdirs, show_errors, intervals, num_intervals);
 
     printf("\nFinal Statistics:\n");
-    display_intervals(intervals, num_intervals, successful_dirs, failed_dirs, successful_files, failed_files, all_size);
+    display_intervals(intervals, num_intervals);
 
     return 0;
 }
