@@ -18,6 +18,15 @@
 #define MAX_INTERVALS 16 // 指定的檔案大小區間的最大數量
 #define MAX_PATHSIZE 4096 // 最大路徑長度 MAX_PATH
 
+#define UNITINFO_FAT   "32KB        64KB"
+#define UNITSIZE_FAT   "32768-65535,65536-131071"
+#define UNITINFO_FAT32 "512      1024      2048      4096      8192       16KB"
+#define UNITSIZE_FAT32 "512-1023,1024-2047,2048-4095,4096-8191,8192-16383,16384-32767"
+#define UNITINFO_EXFAT "64KB         128KB         256KB         512KB          1024KB          2048KB          4096KB          8192KB           10384KB           32768KB"
+#define UNITSIZE_EXFAT "65536-131071,131072-262143,262144-524287,524288-1048575,1048576-2097151,2097152-4194303,4194304-8388607,8388608-16777215,16777216-33554431,33554432-67108863"
+#define UNITINFO_NTFS  "512      1024      2048      4096      8192       16KB        32KB        64KB         128KB         256KB         512KB          1024KB          2048KB" // (DEFAULT)
+#define UNITSIZE_NTFS  "512-1023,1024-2047,2048-4095,4096-8191,8192-16383,16384-32767,32768-65535,65536-131071,131072-262143,262144-524287,524288-1048575,1048576-2097151,2097152-4194303"
+
 typedef struct {
     int min_size;
     int max_size;
@@ -279,15 +288,77 @@ void display_intervals(Interval* intervals, int num_intervals) {
     printf("Total size: %s bytes (%ld)\n", format_size(all_size), all_size);
 }
 
+/**
+ * @brief 比較給定字串中的每個字元是否與指定字元匹配
+ *
+ * 此函式會檢查給定字串中的每個字元，並比較它是否與指定的字元k匹配。
+ * 如果匹配，則返回1；否則返回0。
+ *
+ * @param str 欲檢查的字串
+ * @param k 欲匹配的字元（必須為大寫 char）
+ * @return int 如果找到匹配的字元返回1，否則返回0
+ */
+int argcmp(const char* str, char k) {
+	// 迴圈遍歷字串中的每個字元
+	while (*str) {
+		// 取得字串中當前字元的下一個字元
+		char c = *(str + 1);
+		// 如果字元是小寫字母，將其轉換為大寫
+		if (c >= 'a' && c <= 'z') {
+			c -= ('a' - 'A');
+		}
+		// 檢查當前字元是否為 '/' 或 '-' ，且下一個字元是否等於 k
+		if ((*str == '/' || *str == '-') && c == k) {
+			return 1; // 如果匹配，返回1
+		}
+		// 移動到字串中的下一個字元
+		str++;
+	}
+	// 如果未找到匹配的字元，返回0
+	return 0;
+}
+
+/**
+ * @brief 程式入口函式。
+ *
+ * 這個函式會解析命令列引數，並根據引數的值來決定休眠的時間。
+ *
+ * @param argc 命令列引數的數量。
+ * @param argv 命令列引數的陣列。
+ *
+ * @return 程式的結束狀態。
+ */
 int main(int argc, char* argv[]) {
-    if (argc < 2 || argc > 5) {
-        fprintf(stderr, "Usage: %s <directory_path> [-r] [-i] [intervals]\n", argv[0]);
-        return 1;
-    }
+    char* aStr = argv[1];
+	if (argcmp(aStr, 'V') == 1 || strcmp(aStr, "--version") == 0)
+	{
+		printf("sizestat 1.0.0\n");
+		printf("Written by Kagurazaka Yashi. https://github.com/kagurazakayashi/NyarukoMiniTools\n");
+		printf("License Mulan PSL v2: http://license.coscl.org.cn/MulanPSL2\n");
+		printf("This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.\n");
+		return 0;
+	}
+	else if (strcmp(aStr, "/?") == 0 || argcmp(aStr, 'H') == 1 || strcmp(aStr, "--help") == 0 || argc < 2 || argc > 5)
+	{
+		printf("Usage: %s <Directory Path> [/R] [/D] [Interval List]\n", argv[0]);
+		printf("MODE supported:\n");
+		printf("    /R  Scan Subfolders.\n");
+		printf("    /D  Display detailed scan location information.\n");
+		printf("    /?  display this help and exit.\n");
+		printf("    /V  output version information and exit.\n");
+		printf("Interval List:\n");
+		printf("    Format:  <from bytes>-<to bytes>,<from bytes>-<to bytes>,...\n");
+		printf("    Common values:\nCommon allocation unit sizes for file systems formatted according to Windows:\n");
+        printf("  FAT: %s\n  FAT: %s\n", UNITINFO_FAT, UNITSIZE_FAT);
+        printf("FAT32: %s\nFAT32: %s\n", UNITINFO_FAT32, UNITSIZE_FAT32);
+        printf("EXFAT: %s\nEXFAT: %s\n", UNITINFO_EXFAT, UNITSIZE_EXFAT);
+        printf(" NTFS: %s\n NTFS: %s\n", UNITINFO_NTFS, UNITSIZE_NTFS);
+		return 0;
+	}
 
     signal(SIGINT, handle_sigint);
 
-    char directory_path[1024];
+    char directory_path[MAX_PATHSIZE];
 #if defined(_WIN32) || defined(_WIN64)
     strncpy_s(directory_path, sizeof(directory_path), argv[1], _TRUNCATE);
 #else
@@ -298,13 +369,13 @@ int main(int argc, char* argv[]) {
 
     int include_subdirs = 0;
     int show_errors = 0;
-    const char* intervals_str = "512-1023,1024-2047";
+    const char* intervals_str = UNITSIZE_NTFS;
 
     for (int i = 2; i < argc; i++) {
-        if (strcmp(argv[i], "-r") == 0) {
+        if (argcmp(argv[i], "R") == 1 || strcmp(argv[i], "--subfolders") == 0) {
             include_subdirs = 1;
         }
-        else if (strcmp(argv[i], "-i") == 0) {
+        else if (argcmp(argv[i], "D") == 1 || strcmp(argv[i], "--detail") == 0) {
             show_errors = 1;
         }
         else {

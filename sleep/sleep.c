@@ -212,7 +212,7 @@ int main(int argc, char* argv[])
 		printf("Here NUMBER may be an arbitrary floating point number.\n");
 		printf("Given two or more arguments, pause for the amount of time specified by the sum of their values.\n");
 		printf("    /D  display the remaining time (seconds) every second.\n");
-		printf("    /H  Use high-precision timer (more CPU intensive). Not recommended to use with /D\n");
+		printf("    /P  Use high-precision timer (more CPU intensive). Not recommended to use with /D\n");
 		printf("    /?  display this help and exit.\n");
 		printf("    /V  output version information and exit.\n");
 		return 0;
@@ -230,7 +230,7 @@ int main(int argc, char* argv[])
 		display++;
 		i++;
 	}
-	if (argcmp(aStr, 'H') == 1 || strcmp(aStr, "--high-precision") == 0)
+	if (argcmp(aStr, 'P') == 1 || strcmp(aStr, "--high-precision") == 0)
 	{
 		highPrecision++;
 		i++;

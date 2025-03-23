@@ -70,7 +70,7 @@ Just follow the reverse installation steps.
   - Given two or more arguments, pause for the amount of time specified by the sum of their values.
 - `OPTION`:
   - `/D` : display the remaining time (seconds) every second
-  - `/H` : Use high-precision timer (more CPU intensive). Not recommended to use with `/D`.
+  - `/P` : Use high-precision timer (more CPU intensive). Not recommended to use with `/D`.
   - `/?` : display this help and exit
   - `/V` : output version information and exit
 
@@ -195,7 +195,7 @@ After running, a statistical report output will be given.
 
 ### chkascii:Usage
 
-- Usage:  `chkascii CHKASCII [MODE] [filepath]`
+- Usage:  `chkascii [MODE] [filepath]`
 - MODE supported:
   - `/D`: display detailed check progress (output the check result of each word, slow)
   - `/?`: display this help and exit
@@ -203,6 +203,37 @@ After running, a statistical report output will be given.
 - If `filepath` is not provided, the mode will be entered to accept user keyboard input.
   - Press Enter twice to end input and run statistics,
   - If you press Enter without entering anything, the program will exit.
+
+## ![sizestat](sizestat/icon1.ico) sizestat.exe
+
+Finds files by file size interval. Can be used to find where files that take up more space are.
+
+### sizestat:Usage
+
+- Usage: `sizestat <Directory path> [/R] [/D] [Interval List]`
+- MODE supported:
+  - `/R`: Scan Subfolders
+  - `/D`: Display detailed scan location information
+- Interval List:
+  - Format: `<from bytes>-<to bytes>,<from bytes>-<to bytes>,...`
+  - Common values: Common allocation unit sizes for file systems formatted according to Windows:
+
+```C
+#define UNITINFO_FAT   "32KB        64KB"
+#define UNITSIZE_FAT   "32768-65535,65536-131071"
+#define UNITINFO_FAT32 "512      1024      2048      4096      8192       16KB"
+#define UNITSIZE_FAT32 "512-1023,1024-2047,2048-4095,4096-8191,8192-16383,16384-32767"
+#define UNITINFO_EXFAT "64KB         128KB         256KB         512KB          1024KB          2048KB          4096KB          8192KB           10384KB           32768KB"
+#define UNITSIZE_EXFAT "65536-131071,131072-262143,262144-524287,524288-1048575,1048576-2097151,2097152-4194303,4194304-8388607,8388608-16777215,16777216-33554431,33554432-67108863"
+#define UNITINFO_NTFS  "512      1024      2048      4096      8192       16KB        32KB        64KB         128KB         256KB         512KB          1024KB          2048KB" // (DEFAULT)
+#define UNITSIZE_NTFS  "512-1023,1024-2047,2048-4095,4096-8191,8192-16383,16384-32767,32768-65535,65536-131071,131072-262143,262144-524287,524288-1048575,1048576-2097151,2097152-4194303"
+```
+
+## ![serialcd](serialcd/icon1.ico) serialcd.exe
+
+Allows the terminal to connect to the machine through the serial port and execute commands.
+
+In development ...
 
 ## ![path](install_script/path.ico) path.exe
 

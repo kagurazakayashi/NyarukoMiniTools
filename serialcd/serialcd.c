@@ -15,7 +15,7 @@ int historyCount = 0;
 
 BOOL WINAPI signalHandler(DWORD signal) {
     if (signal == CTRL_C_EVENT) {
-        wprintf(L"CTRL+C pressed, exiting...\n");
+        printf("CTRL+C pressed, exiting...\n");
         keepRunning = 0;
         return TRUE;
     }
@@ -85,70 +85,124 @@ void printConsoleSize() {
     if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
         columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
         rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
-        wprintf(L"Console size: %d columns, %d rows\n", columns, rows);
+        printf("Console size: %d columns, %d rows\n", columns, rows);
     }
     else {
-        wprintf(L"Error getting console size\n");
+        printf("Error getting console size\n");
     }
 }
 
-int main() {
-    _wsetlocale(LC_ALL, L"");
+void printUsage() {
+    wprintf(L"Usage: program_name [-n port_name] [-b baud_rate] [-s byte_size] [-t stop_bits] [-p parity] [-o timeout]\n");
+}
 
-    if (!SetConsoleCtrlHandler(signalHandler, TRUE)) {
-        wprintf(L"Error setting up signal handler\n");
-        return 1;
+int stricmp(const char *a, const char *b) {
+    while (*a && *b && tolower((unsigned char)*a) == tolower((unsigned char)*b)) {
+        a++;
+        b++;
     }
+    return tolower((unsigned char)*a) - tolower((unsigned char)*b);
+}
 
-    printConsoleSize();
+void adjustPortName(char **portName) {
+    if (strncmp(*portName, "COM", 3) == 0) {
+        char *adjustedName = malloc(strlen("\\\\.\\") + strlen(*portName) + 1);
+        strcpy(adjustedName, "\\\\.\\");
+        strcat(adjustedName, *portName);
+        *portName = adjustedName;
+    } else if (strncmp(*portName, "tty", 3) == 0) {
+        char *adjustedName = malloc(strlen("/dev/") + strlen(*portName) + 1);
+        strcpy(adjustedName, "/dev/");
+        strcat(adjustedName, *portName);
+        *portName = adjustedName;
+    } else if (strncmp(*portName, "USB", 3) == 0) {
+        char *adjustedName = malloc(strlen("/dev/tty") + strlen(*portName) + 1);
+        strcpy(adjustedName, "/dev/tty");
+        strcat(adjustedName, *portName);
+        *portName = adjustedName;
+    }
+}
 
+int parseArguments(int argc, char *argv[], char **portName, int *baudRate, int *byteSize, int *stopBits, int *parity, int *timeout) {
+    for (int i = 1; i < argc; i++) {
+        if ((argv[i][0] == '-' || argv[i][0] == '/') && i + 1 < argc) {
+            if (stricmp(argv[i] + 1, "n") == 0) {
+                *portName = argv[i + 1];
+            } else if (stricmp(argv[i] + 1, "b") == 0) {
+                *baudRate = atoi(argv[i + 1]);
+            } else if (stricmp(argv[i] + 1, "s") == 0) {
+                *byteSize = atoi(argv[i + 1]);
+            } else if (stricmp(argv[i] + 1, "t") == 0) {
+                *stopBits = atoi(argv[i + 1]);
+            } else if (stricmp(argv[i] + 1, "p") == 0) {
+                *parity = atoi(argv[i + 1]);
+            } else if (stricmp(argv[i] + 1, "o") == 0) {
+                *timeout = atoi(argv[i + 1]);
+            } else {
+                printUsage();
+                return 1;
+            }
+            i++;
+        } else {
+            printUsage();
+            return 1;
+        }
+    }
+    return 0;
+}
+
+HANDLE configureSerialPort(char *portName, int baudRate, int byteSize, int stopBits, int parity, int timeout) {
     HANDLE hSerial;
-    DCB dcbSerialParams = { 0 };
-    COMMTIMEOUTS timeouts = { 0 };
+    DCB dcbSerialParams = {0};
+    COMMTIMEOUTS timeouts = {0};
 
-    hSerial = CreateFile(
-        L"\\\\.\\COM1", GENERIC_READ | GENERIC_WRITE, 0, NULL,
+    hSerial = CreateFileA(
+        portName, GENERIC_READ | GENERIC_WRITE, 0, NULL,
         OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL
     );
 
     if (hSerial == INVALID_HANDLE_VALUE) {
         wprintf(L"Error opening serial port\n");
-        return 1;
+        return INVALID_HANDLE_VALUE;
     }
 
     dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
     if (!GetCommState(hSerial, &dcbSerialParams)) {
         wprintf(L"Error getting serial port state\n");
         CloseHandle(hSerial);
-        return 1;
+        return INVALID_HANDLE_VALUE;
     }
 
-    dcbSerialParams.BaudRate = CBR_9600;
-    dcbSerialParams.ByteSize = 8;
-    dcbSerialParams.StopBits = ONESTOPBIT;
-    dcbSerialParams.Parity = NOPARITY;
+    dcbSerialParams.BaudRate = baudRate;
+    dcbSerialParams.ByteSize = byteSize;
+    dcbSerialParams.StopBits = stopBits;
+    dcbSerialParams.Parity = parity;
 
     if (!SetCommState(hSerial, &dcbSerialParams)) {
         wprintf(L"Error setting serial port state\n");
         CloseHandle(hSerial);
-        return 1;
+        return INVALID_HANDLE_VALUE;
     }
 
-    timeouts.ReadIntervalTimeout = 50;
-    timeouts.ReadTotalTimeoutConstant = 50;
+    timeouts.ReadIntervalTimeout = timeout;
+    timeouts.ReadTotalTimeoutConstant = timeout;
     timeouts.ReadTotalTimeoutMultiplier = 10;
-    timeouts.WriteTotalTimeoutConstant = 50;
+    timeouts.WriteTotalTimeoutConstant = timeout;
     timeouts.WriteTotalTimeoutMultiplier = 10;
 
     if (!SetCommTimeouts(hSerial, &timeouts)) {
         wprintf(L"Error setting serial port timeouts\n");
         CloseHandle(hSerial);
-        return 1;
+        return INVALID_HANDLE_VALUE;
     }
 
-    wchar_t buffer[BUFFER_SIZE] = { 0 };
+    return hSerial;
+}
+
+void processSerialData(HANDLE hSerial) {
+    wchar_t buffer[BUFFER_SIZE] = {0};
     DWORD bytesRead;
-    wchar_t output[BUFFER_SIZE] = { 0 };
+    wchar_t output[BUFFER_SIZE] = {0};
     int bufferIndex = 0;
     int historyNavigateIndex = -1;
 
@@ -166,8 +220,7 @@ int main() {
                     wchar_t backspace[] = L"\b \b";
                     WriteFile(hSerial, backspace, sizeof(backspace) - sizeof(wchar_t), &bytesWritten, NULL);
                 }
-            }
-            else if (c == '\r' || c == '\n') {
+            } else if (c == '\r' || c == '\n') {
                 buffer[bufferIndex] = '\0';
                 wprintf(L"Received command: %s\n", buffer);
 
@@ -184,8 +237,7 @@ int main() {
 
                 bufferIndex = 0;
                 historyNavigateIndex = -1;
-            }
-            else if (c == '\t') {
+            } else if (c == '\t') {
                 DWORD bytesWritten;
                 for (int i = 0; i < TAB_WIDTH; ++i) {
                     WriteFile(hSerial, L" ", sizeof(wchar_t), &bytesWritten, NULL);
@@ -194,14 +246,13 @@ int main() {
                 if (bufferIndex >= BUFFER_SIZE) {
                     bufferIndex = BUFFER_SIZE - 1;
                 }
-            }
-            else if (c == '\x1b' && bufferIndex + 2 < BUFFER_SIZE) { // Escape sequence
+            } else if (c == '\x1b' && bufferIndex + 2 < BUFFER_SIZE) {
                 if (!ReadFile(hSerial, buffer + bufferIndex + 1, 2 * sizeof(wchar_t), &bytesRead, NULL)) {
                     wprintf(L"Error reading from serial port\n");
                     break;
                 }
                 if (bytesRead >= 2 * sizeof(wchar_t) && buffer[bufferIndex + 1] == L'[') {
-                    if (buffer[bufferIndex + 2] == L'A') { // 上箭头
+                    if (buffer[bufferIndex + 2] == L'A') {
                         if (historyNavigateIndex == -1) {
                             historyNavigateIndex = historyIndex;
                         }
@@ -212,14 +263,13 @@ int main() {
                             buffer[bufferIndex] = '\0';
                             DWORD bytesWritten;
                             WriteFile(hSerial, L"\r", sizeof(wchar_t), &bytesWritten, NULL);
-                            for (int i = 0; i < BUFFER_SIZE; ++i) WriteFile(hSerial, L" ", sizeof(wchar_t), &bytesWritten, NULL); // Clear line
+                            for (int i = 0; i < BUFFER_SIZE; ++i) WriteFile(hSerial, L" ", sizeof(wchar_t), &bytesWritten, NULL);
                             WriteFile(hSerial, L"\r", sizeof(wchar_t), &bytesWritten, NULL);
                             WriteFile(hSerial, buffer, bufferIndex * sizeof(wchar_t), &bytesWritten, NULL);
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 int charLen = mblen((const char*)&c, MAX_CHAR_SIZE);
                 if (charLen > 1) {
                     wchar_t multiByteChar[MAX_CHAR_SIZE];
@@ -237,8 +287,7 @@ int main() {
                     if (bufferIndex >= BUFFER_SIZE) {
                         bufferIndex = BUFFER_SIZE - 1;
                     }
-                }
-                else {
+                } else {
                     DWORD bytesWritten;
                     WriteFile(hSerial, buffer + bufferIndex, sizeof(wchar_t), &bytesWritten, NULL);
                     bufferIndex++;
@@ -249,6 +298,37 @@ int main() {
             }
         }
     }
+}
+
+int main(int argc, char *argv[]) {
+    _wsetlocale(LC_ALL, L"");
+
+    if (!SetConsoleCtrlHandler(signalHandler, TRUE)) {
+        wprintf(L"Error setting up signal handler\n");
+        return 1;
+    }
+
+    printConsoleSize();
+
+    char *portName = "COM1";
+    int baudRate = CBR_9600;
+    int byteSize = 8;
+    int stopBits = ONESTOPBIT;
+    int parity = NOPARITY;
+    int timeout = 50;
+
+    if (parseArguments(argc, argv, &portName, &baudRate, &byteSize, &stopBits, &parity, &timeout)) {
+        return 1;
+    }
+
+    adjustPortName(&portName);
+
+    HANDLE hSerial = configureSerialPort(portName, baudRate, byteSize, stopBits, parity, timeout);
+    if (hSerial == INVALID_HANDLE_VALUE) {
+        return 1;
+    }
+
+    processSerialData(hSerial);
 
     CloseHandle(hSerial);
     return 0;
