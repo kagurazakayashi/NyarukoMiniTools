@@ -231,6 +231,21 @@ tee-like: 功能类似于 `tee` 。 将标准输入复制到每个文件，并�
 #define UNITSIZE_NTFS  "512-1023,1024-2047,2048-4095,4096-8191,8192-16383,16384-32767,32768-65535,65536-131071,131072-262143,262144-524287,524288-1048575,1048576-2097151,2097152-4194303"
 ```
 
+## rectcalc.exe
+
+该程序根据输入的矩形坐标或尺寸，计算并输出矩形的宽、高及像素数。
+
+### rectcalc:Usage
+
+使用:
+
+- 模式 1 (左上右下坐标求宽高和大小): `rectcalc X1,Y1 X2,Y2`
+  - Example: `rectcalc 370,125 406,143`
+- 模式 2 (左上坐标和宽高求右下坐标): `rectcalc X1,Y1 宽x高`
+  - Example: `rectcalc 370,125 36x18`
+- `rectcalc /?`: display this help and exit
+- `rectcalc /V`: output version information and exit
+
 ## ![serialcd](serialcd/icon1.ico) serialcd.exe
 
 允许终端通过串口连接到本机并执行命令。

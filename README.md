@@ -229,6 +229,21 @@ Finds files by file size interval. Can be used to find where files that take up 
 #define UNITSIZE_NTFS  "512-1023,1024-2047,2048-4095,4096-8191,8192-16383,16384-32767,32768-65535,65536-131071,131072-262143,262144-524287,524288-1048575,1048576-2097151,2097152-4194303"
 ```
 
+## rectcalc.exe
+
+This program calculates and outputs the width, height, and pixel count of a rectangle from given coordinates or dimensions.
+
+### rectcalc:Usage
+
+Usage:
+
+- Mode 1 (two points): `rectcalc X1,Y1 X2,Y2`
+  - Example: `rectcalc 370,125 406,143`
+- Mode 2 (size):       `rectcalc X1,Y1 WIDTHxHEIGHT`
+  - Example: `rectcalc 370,125 36x18`
+- `rectcalc /?`: display this help and exit
+- `rectcalc /V`: output version information and exit
+
 ## ![serialcd](serialcd/icon1.ico) serialcd.exe
 
 Allows the terminal to connect to the machine through the serial port and execute commands.
